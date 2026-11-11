@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080f19">
+<title>Corner Coach 4 · Your Blue Peugeot 308 (2010)</title>
+<style>
+:root{color-scheme:dark;--bg:#090f18;--panel:#111d2b;--muted:#93a4b8;--line:#263447;--lime:#aeef5a;--cyan:#4de6e4;--amber:#ffc56d;--white:#edf5ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 20% 0%,#192d42 0%,#090f18 52%);color:var(--white);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{touch-action:manipulation;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.shell{width:min(1440px,calc(100% - 36px));margin:0 auto;padding:26px 0 35px}.header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}.eyebrow{font-size:10px;letter-spacing:.23em;color:var(--cyan);font-weight:850;text-transform:uppercase}.header h1{font-size:clamp(25px,3vw,38px);line-height:1.08;letter-spacing:-.05em;margin:5px 0 0;font-weight:800}.header h1 em{font-style:normal;color:var(--lime)}.head-tags{display:flex;gap:7px;flex-wrap:wrap}.head-tags span{font-size:10px;letter-spacing:.07em;border:1px solid #38506a;color:#b8c8d9;border-radius:30px;padding:8px 10px;background:#101c2a}.head-tags .live{color:#bff778;border-color:#435e36}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 328px;gap:17px;align-items:start}.stage{min-width:0}.stage-wrap{height:min(680px,65vw);min-height:505px;position:relative;overflow:hidden;border-radius:15px;background:#1d302a;border:1px solid #345064;box-shadow:0 25px 55px #0007}#game{display:block;width:100%;height:100%;touch-action:none}.screenwash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#071425a8 0%,transparent 20%,transparent 79%,#071425c5 100%)}.canvas-top{position:absolute;top:17px;left:19px;pointer-events:none}.canvas-top strong{font-size:14px;font-weight:800;letter-spacing:.12em}.canvas-top div{color:#a7bac9;font-size:10px;letter-spacing:.15em;margin-top:3px}.canvas-bottom{position:absolute;bottom:18px;left:18px;right:18px;display:flex;justify-content:space-between;gap:8px;pointer-events:none;flex-wrap:wrap}.legend{font-size:11px;display:flex;gap:16px;flex-wrap:wrap;background:#09121cbe;border:1px solid #ffffff25;border-radius:9px;padding:9px 12px}.key{display:inline-block;width:20px;height:3px;vertical-align:middle;margin-right:6px;border-radius:5px;background:var(--lime);box-shadow:0 0 7px currentColor}.key.proj{background:white;border-top:2px dotted white}.corner-tag{font-size:10px;color:#e5eef6;letter-spacing:.08em;align-self:center}
+.panel{background:linear-gradient(140deg,#142235,#0d1724);border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 12px 28px #0004}.panel+.panel{margin-top:13px}.small-head{display:flex;justify-content:space-between;align-items:center;color:#a5b6c7;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:850;margin-bottom:13px}.small-head span:last-child{color:#6082a4}.segmented{display:flex;gap:5px;background:#0a121e;border-radius:10px;padding:5px;margin-bottom:15px}.segmented button{flex:1;background:transparent;border:0;color:#8295a9;border-radius:7px;padding:10px 7px;font-size:12px;font-weight:750}.segmented button.active{background:#284257;color:white;box-shadow:0 2px 8px #0006}
+.coach{border:1px solid #314559;border-radius:11px;background:#172a39;padding:15px;min-height:121px}.coach .state{color:var(--lime);font-size:10px;letter-spacing:.13em;font-weight:900;margin-bottom:6px}.coach h2{margin:0 0 7px;font-size:20px;line-height:1.15;letter-spacing:-.03em}.coach p{margin:0;color:#b9c7d4;font-size:12px;line-height:1.55}.coach.urgent{border-color:#b88432;background:#30271e}.coach.urgent .state{color:#ffcf7e}.coach.bad{border-color:#b74f53;background:#352228}.coach.bad .state{color:#ff9fa0}.coach.done{border-color:#6ca65e;background:#1d3228}
+.metric{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #26374a;padding:14px 2px 12px}.metric:last-of-type{border-bottom:none}.metric span{font-size:11px;color:#9fb3c5}.metric strong{font-size:22px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.metric strong small{font-size:12px;color:#a6bccf}.progress{height:4px;border-radius:8px;background:#2b3a4b;overflow:hidden;margin:2px 0 8px}.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));width:0%;transition:width .08s}
+.steering-heading{display:flex;align-items:baseline;justify-content:space-between}.steering-heading strong{font-size:24px;font-variant-numeric:tabular-nums}.slider{width:100%;accent-color:var(--cyan);margin:18px 0 9px;cursor:pointer}.slider-labels{display:flex;justify-content:space-between;color:#95abc1;font-size:11px}.small-control{display:flex;gap:8px;margin-top:12px}.small-control button{background:#1b3042;border:1px solid #34526a;color:#d8eaf5;border-radius:9px;min-height:37px;flex:1;font-size:12px;font-weight:800}
+.pedals{display:grid;grid-template-columns:1.2fr .8fr;gap:9px;margin-top:14px}.pedal{min-height:72px;border-radius:11px;border:1px solid #4a7541;background:linear-gradient(#326344,#244e35);color:white;font-weight:900;font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;touch-action:none}.pedal.secondary{border-color:#465972;background:linear-gradient(#293e51,#1e3041)}.pedal:active,.pedal.pressed{transform:translateY(1px);filter:brightness(1.3)}.pedal small{font-size:10px;font-weight:600;letter-spacing:.07em;color:#c3ddce;margin-top:4px}
+.actions{display:flex;gap:8px;margin-top:10px}.actions button{flex:1;background:#1c2d42;color:#dfecfb;border:1px solid #34506d;border-radius:9px;padding:11px 8px;font-size:11px;font-weight:850}.actions button.primary{border-color:#527b91;background:#233f52}.footnote{font-size:11px;color:#a0b0c2;margin-top:11px;line-height:1.5}.hintbar{display:flex;justify-content:space-between;gap:12px;padding:12px 4px;color:#849ab0;font-size:11px;flex-wrap:wrap}.kbd{display:inline-block;padding:1px 5px;border:1px solid #4b5c70;border-radius:3px;color:#d2e0ed;background:#1d2a39;font-family:monospace;font-size:10px}
+@media(max-width:980px){.layout{grid-template-columns:minmax(0,1fr)}.side{display:grid;grid-template-columns:1fr 1fr;gap:13px;align-items:start}.panel+.panel{margin-top:0}.stage-wrap{height:60vh;min-height:490px;max-height:670px}}
+@media(max-width:620px){.shell{width:calc(100% - 20px);padding-top:16px}.header{margin-bottom:15px}.head-tags{gap:5px}.head-tags span{font-size:9px;padding:6px 8px}.stage-wrap{height:480px;min-height:420px}.side{display:block}.panel{padding:15px}.panel+.panel{margin-top:12px}.canvas-top{left:12px;top:13px}.canvas-bottom{left:8px;bottom:10px;right:8px}.legend{font-size:9px;gap:8px;padding:8px}.corner-tag{display:none}.hintbar{font-size:10px}}
+
+.course-panel{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:13px 15px;margin-bottom:13px;background:linear-gradient(100deg,#172a3b,#102033);border:1px solid #35546a;border-radius:12px}
+.course-info{font-size:11px;color:#9bb5c8}.course-info strong{display:block;font-size:21px;color:#e9f6fb;letter-spacing:-.04em}.course-info small{font-size:10px;letter-spacing:.04em}.course-panel button{border:1px solid #4d8794;background:#224657;color:#d4ffed;border-radius:8px;padding:11px 13px;font-size:12px;font-weight:800;white-space:nowrap}
+.mirror-panel .small-head{margin-bottom:11px}.mirror-frame{background:#0b151d;border:6px solid #26394b;border-bottom-width:11px;border-radius:18px 18px 28px 28px;box-shadow:inset 0 1px 10px #0009,0 10px 22px #0005;overflow:hidden;position:relative}.mirror-frame canvas{display:block;width:100%;height:auto;aspect-ratio:1.9/1}.mirror-frame:after{content:"";pointer-events:none;position:absolute;inset:0;border-radius:11px 11px 20px 20px;box-shadow:inset 0 0 24px #03080daa}.mirror-caption{margin-top:9px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:11px;color:#b3c3ce}.mirror-caption strong{font-size:11px;color:#b8f779;font-variant-numeric:tabular-nums}.mirror-note{margin-top:6px;font-size:10px;color:#8ea2b3;line-height:1.45}
+@media(min-width:621px) and (max-width:980px){.mirror-panel{grid-column:2}.side>.panel:last-child{grid-column:1/3}}
+@media(max-width:620px){.course-panel{padding:10px 12px}.course-panel button{padding:10px}.mirror-panel{margin-top:12px}}
+
+.mirror-inset{position:absolute;top:65px;left:18px;width:202px;border:3px solid #a2c3c999;border-radius:12px 12px 20px 20px;overflow:hidden;box-shadow:0 6px 24px #0009;pointer-events:none}.mirror-inset canvas{display:block;width:100%;height:auto}
+.mobile-stage-controls{display:none}
+@media(max-width:620px){.mirror-inset{top:61px;left:12px;width:141px;border-width:2px;border-radius:9px 9px 13px 13px}.mobile-stage-controls{display:flex;position:absolute;bottom:55px;right:9px;flex-direction:column;gap:5px;width:144px}.mobile-stage-controls button{border:1px solid #87b4b6;background:#172e3de5;color:#e8fffa;min-height:40px;font-size:11px;font-weight:850;border-radius:8px;box-shadow:0 3px 12px #0008;user-select:none;touch-action:none}.mobile-wheel{display:flex;gap:5px}.mobile-wheel button{flex:1}.mobile-stage-controls .mobile-reverse{background:#326b49e8;border-color:#78c58b;min-height:46px}}
+
+/* Random road specification */
+.course-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+.course-stat{padding:7px 9px;background:#0a1726;border:1px solid #345064;border-radius:8px}
+.course-stat span{display:block;font-size:9px;color:#a5bad0;letter-spacing:.07em;text-transform:uppercase}
+.course-stat strong{display:block;color:#edf9fd;font-size:18px;letter-spacing:-.04em}
+.course-info{flex:1}.course-panel{align-items:stretch}.course-panel button{align-self:stretch}
+.course-subtitle{font-size:10px;color:#92abc1;margin-top:5px}
+/* Calibrated mirror tuning */
+.mirror-choice{display:flex;gap:5px;padding:4px;background:#081520;border:1px solid #30475c;border-radius:10px;margin-bottom:11px}
+.mirror-choice button{flex:1;color:#90adc5;background:transparent;border:0;border-radius:7px;padding:9px 3px;font-weight:800;font-size:11px}
+.mirror-choice button.active{background:#234558;color:#e7fff2;box-shadow:0 2px 8px #0005}
+.mirror-frame{isolation:isolate}
+.mirror-settings{margin-top:12px;border-top:1px solid #34485a;padding-top:12px}
+.mirror-settings label{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#c0d1dd;margin:8px 0 0}
+.mirror-settings label span{font-size:10px;color:#8eafc7}
+.mirror-settings input[type=range]{width:100%;accent-color:#b4f37c;margin:11px 0 3px;cursor:pointer}
+.mirror-actions{display:flex;gap:7px;margin-top:9px}
+.mirror-actions button{flex:1;background:#234053;border:1px solid #3c7081;border-radius:8px;color:#e4fcf5;padding:9px 4px;font-size:10px;font-weight:800}
+.mirror-actions button:last-child{background:#172a3d;border-color:#344e61}
+.mirror-status{margin-top:9px;font-size:11px;color:#ffd69a;padding:9px 10px;border:1px solid #806842;background:#30291f;border-radius:8px;line-height:1.45}
+.mirror-status.aligned{color:#c9f9c1;border-color:#507b4d;background:#1c352a}
+.mirror-guide-key{display:flex;gap:6px;align-items:center;color:#b3dcb8;font-size:10px;margin-top:8px}
+.mirror-guide-key::before{content:'';display:block;width:18px;height:0;border-top:2px dashed #aff18b}
+@media(max-width:620px){.course-stats{gap:5px}.course-stat{padding:6px}.course-stat strong{font-size:16px}.course-stat span{font-size:8px}}
+
+/* V4: turn-in quiz and blue 308 styling */
+.pick-overlay{position:absolute;top:17px;right:18px;width:min(304px,38%);z-index:3;background:#091725e9;border:1px solid #91d5ef85;border-radius:11px;padding:12px 13px;box-shadow:0 5px 18px #0008;pointer-events:none}
+.pick-overlay span{display:block;color:#93b5c9;font-size:10px;letter-spacing:.065em}.pick-overlay span:first-child{color:#9deaca;letter-spacing:.12em;font-weight:900;margin-bottom:4px}
+.pick-overlay strong{display:block;font-size:13px;line-height:1.35;color:#f7feff;margin-bottom:4px}
+.pick-overlay.in-drive{border-color:#4f996677}
+#game.is-picking{cursor:crosshair}
+.turn-panel{background:linear-gradient(135deg,#142e3b,#101e31);border:1px solid #478b9d;border-radius:10px;margin-bottom:12px;padding:13px 13px 12px}
+.turn-panel .quiz-step{color:#aef5ca;font-size:10px;font-weight:900;letter-spacing:.11em}.turn-panel h2{margin:5px 0 6px;font-size:17px;line-height:1.2}.turn-panel p{margin:0;color:#bed0dc;line-height:1.48;font-size:11px}
+.turn-panel .turn-score{margin-top:10px;background:#142337;border:1px solid #3d5972;padding:10px 11px;border-radius:7px;display:none;font-size:11px;line-height:1.5;color:#dbe9f5}
+.turn-panel .turn-score.visible{display:block}.turn-score .offset{font-size:21px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.04em;display:block}.turn-score.good{border-color:#5aab79;background:#1b392f}.turn-score.good .offset{color:#b7f7af}.turn-score.warning{border-color:#c09a50;background:#3a301e}.turn-score.warning .offset{color:#ffe2a0}
+.turn-buttons{display:flex;gap:7px;margin-top:9px}.turn-buttons button{flex:1;border:1px solid #557c8e;border-radius:8px;background:#234b5b;color:#edfff6;padding:10px 8px;font-size:11px;font-weight:850}.turn-buttons button:disabled{opacity:.37;cursor:not-allowed}.turn-buttons button#start-turn:not(:disabled){border-color:#70b48a;background:#2b7253}
+.turn-buttons button[hidden]{display:none}.turn-panel .actual-turn{border-top:1px solid #3a5870;margin-top:9px;padding-top:9px;color:#afcede;font-size:11px}
+.steering-readout{display:flex;gap:14px;align-items:center;margin:4px 0 9px}.steering-wheel-icon{width:76px;height:76px;flex-shrink:0;transition:transform .11s linear;filter:drop-shadow(0 4px 5px #0008)}
+.steering-values{display:flex;flex-direction:column;gap:2px}.steering-values span{font-size:12px;color:#c9dce9;font-weight:800}.steering-values small{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;color:#7fb2c8;margin-top:3px}.steering-values strong{font-size:28px;font-variant-numeric:tabular-nums}
+button:disabled{opacity:.42;cursor:not-allowed}
+@media(max-width:620px){.pick-overlay{top:auto;bottom:87px;left:9px;right:auto;width:146px;padding:9px 9px}.pick-overlay strong{font-size:10px}.pick-overlay span{font-size:8px}.pick-overlay span:first-child{font-size:8px}.steering-wheel-icon{width:65px;height:65px}.turn-panel{padding:11px}.turn-panel h2{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="header"><div><div class="eyebrow">Driver training / Interactive</div><h1>CORNER <em>COACH.</em></h1></div><div class="head-tags"><span>BLUE PEUGEOT 308 · 2010</span><span>IRISH LEFT-HAND REVERSE</span><span id="course-badge">90° CORNER</span><span class="live">● LIVE PHYSICS</span></div></header>
+ <div class="layout"><section class="stage"><div class="stage-wrap"><canvas id="game" aria-label="Top down driving simulation: reverse a Peugeot 308 around a left corner"></canvas><div class="screenwash"></div><div id="pick-overlay" class="pick-overlay"><span id="pick-stage">STEP 1 OF 3</span><strong id="pick-prompt">Tap the road where you would start steering left</strong><span id="pick-sub">Choose the turning point before you drive. The answer is hidden!</span></div><div class="mirror-inset"><canvas id="mirrormini" width="288" height="152" aria-label="Live miniature left mirror"></canvas></div><div class="mobile-stage-controls"><div class="mobile-wheel"><button type="button" id="touch-left" aria-label="Hold to turn steering left">↶ LEFT</button><button type="button" id="touch-right" aria-label="Hold to turn steering right">RIGHT ↷</button></div><button class="mobile-reverse" id="reverse-stage" type="button">↓ HOLD REVERSE</button></div><div class="canvas-top"><strong>01 / TURN-IN CHALLENGE</strong><div>PICK THE POINT · DRIVE · LEARN</div></div><div class="canvas-bottom"><div class="legend"><span><i class="key"></i>Ideal line</span><span><i class="key proj"></i>Projected reverse path</span><span><i class="key" style="background:#ffcb69"></i>Reference point</span></div><div class="corner-tag">308 / REAR-AXLE MODEL</div></div></div><div class="hintbar"><span>Desktop: <b class="kbd">←</b> <b class="kbd">→</b> steer · hold <b class="kbd">↓</b> to reverse · <b class="kbd">↑</b> forward</span><span>Tap controls on phone / tablet</span></div></section>
+ <aside class="side"><div class="course-panel"><div class="course-info"><small>GENERATED ROAD / NEW CHALLENGE</small><strong id="course-heading">90° · standard bend</strong><div class="course-stats"><div class="course-stat"><span>Corner angle</span><strong id="road-angle">90°</strong></div><div class="course-stat"><span>Kerb curve length</span><strong id="road-length">5.0 m</strong></div></div><div class="course-subtitle" id="course-detail">Radius 3.2 m · standard-width road</div></div><button id="newcorner" type="button">⤨ New corner</button></div><section class="panel"><div class="small-head"><span>Driving instructor</span><span>01 / 03</span></div><div class="segmented"><button id="guided" class="active" type="button">● Guided practice</button><button id="free" type="button">Free practice</button></div><div class="turn-panel" id="turn-panel"><div class="quiz-step">STEP 1 / PREDICT THE TURN</div><h2 id="turn-title">Where would you start turning?</h2><p id="turn-description">Tap or click the main road directly behind the car, at the point you'd begin turning the wheel left while reversing.</p><div class="turn-score" id="turn-score" aria-live="polite"></div><div class="turn-buttons"><button id="change-turn" type="button" hidden>↺ Change point</button><button id="start-turn" type="button" disabled>Start reversing →</button></div><div id="actual-turn" class="actual-turn" hidden></div></div><div class="coach" id="coach"><div class="state" id="coach-state">STEP 01 / PREPARE</div><h2 id="coach-title">Reverse straight first</h2><p id="coach-text">Keep the wheel centred. Reverse slowly towards the orange turning marker, watching around the car.</p></div><div class="metric"><span>Distance to turn-in</span><strong id="distance">8.5 <small>m</small></strong></div><div class="progress"><i id="progressbar"></i></div><div class="metric"><span>Car angle into corner</span><strong id="angle">0° / 90°</strong></div><div class="metric"><span>Rear-axle steering</span><strong id="direction">STRAIGHT</strong></div></section>
+ <section class="panel mirror-panel"><div class="small-head"><span>308 · adjustable left mirror</span><span>● LIVE REFLECTION</span></div>
+<div class="mirror-choice"><button id="reverse-target" class="active" type="button">↙ Kerb / reversing</button><button id="road-target" type="button">↑ Normal driving</button></div>
+<div class="mirror-frame"><canvas id="mirror" width="288" height="152" role="img" aria-label="Simulated adjustable left door mirror: live view of road and kerb behind the Peugeot 308"></canvas></div>
+<div class="mirror-guide-key">Green dashed marks = suggested framing</div>
+<div class="mirror-caption"><span>REAR-LEFT KERB CLEARANCE</span><strong id="clearance">—</strong></div>
+<div class="mirror-settings"><label for="mirror-horizontal">Mirror ↔ left / right <span id="mirror-h-val">0.0°</span></label><input type="range" id="mirror-horizontal" min="-4" max="4" value="1" step="0.1" aria-label="Mirror horizontal aiming"><label for="mirror-vertical">Mirror ↕ up / down <span id="mirror-v-val">0.0°</span></label><input type="range" id="mirror-vertical" min="-2" max="5" value="0" step="0.1" aria-label="Mirror vertical aiming"><div class="mirror-actions"><button id="mirror-align" type="button">✦ Set suggested view</button><button id="mirror-drive" type="button">↺ Restore driving</button></div><div id="mirror-status" class="mirror-status" role="status">Aim down slightly for the kerb while keeping a strip of the car visible.</div></div>
+<div class="mirror-note">Simplified mirror simulation, not an exact 308 reflection. Green guides show a <em>starting point</em>, not a universal setting. During a real manoeuvre, check all around the car, not just the mirror, and restore your normal road view afterwards.</div></section>
+<section class="panel"><div class="small-head"><span>Vehicle controls</span><span>WHEEL / PEDALS</span></div><div class="steering-readout"><svg id="steering-wheel-icon" class="steering-wheel-icon" viewBox="0 0 80 80" role="img" aria-label="Steering wheel direction"><circle cx="40" cy="40" r="31" fill="#111b27" stroke="#b6c6d8" stroke-width="6"/><path d="M11 33 Q40 44 69 33 M40 40 L40 67 M40 38 L28 51 M40 38 L52 51" fill="none" stroke="#8ba6c2" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="40" r="12" fill="#294157" stroke="#d3e3ed" stroke-width="2"/><path d="M35 39 L45 39 M40 33 L40 46" stroke="#f3f8fa" stroke-width="2"/></svg><div class="steering-values"><span>RHD steering wheel <small>DRIVER'S RIGHT</small></span><strong id="steervalue">0°</strong></div></div><input id="wheel" class="slider" type="range" min="-35" max="35" value="0" step="1" aria-label="Front wheel steering angle (left to right)"><div class="slider-labels"><span>← LEFT</span><span>CENTRE</span><span>RIGHT →</span></div><div class="small-control"><button id="left" type="button">↶ Left 5°</button><button id="center" type="button">◎ Centre</button><button id="right" type="button">Right 5° ↷</button></div><div class="pedals"><button class="pedal" id="reverse" type="button">↓ REVERSE <small>HOLD TO MOVE</small></button><button class="pedal secondary" id="forward" type="button">↑ FORWARD <small>HOLD TO MOVE</small></button></div><div class="actions"><button class="primary" id="demo" type="button">▶ Watch ideal run</button><button id="reset" type="button">↺ Reset same corner</button></div><div class="footnote">Your blue 5-door 308 is rendered from above, so its shape is an illustration of the car in your photo. Simulation uses 2010 308 hatch dimensions and bicycle-model steering. It teaches the timing and geometry, not real car feel or the safety observations needed on the road.</div></section></aside></div>
+</div>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d',{alpha:false});
+const $=id=>document.getElementById(id);
+const WHEELBASE=2.608, WIDTH=1.821, FRONT=3.534, REAR=.742, MAXSTEER=35*Math.PI/180;
+// Road generator. Angles are the amount the car must turn while reversing.
+// The upper left kerb is tangent to a fillet circle and the incoming straight road.
+const ROAD={mainL:4.4,mainR:11.6,halfW:3.3,origin:{x:0,y:2},cornerR:3.2,theta:Math.PI/2,approach:8.5};
+// Turning arc is explicitly specified by the *kerb curve length* and its angle.
+// For a circular bend: arc length = radius × radians. Independently varying
+// both angle and arc length produces a realistic range of open and tight bends.
+const MIRROR_TARGETS={reverse:{yaw:0.1,tilt:3.5},road:{yaw:0.9,tilt:0}};
+let mirrorAim={yaw:1,tilt:0},mirrorGoal='reverse';
+let START,TURN,guide,car,guided=true,demo=false,moving=0,collision=false,success=false,history=[],time=0,pressLeft=false,pressRight=false,last=0;
+let phase='pick',chosenY=null,actualTurnY=null;
+const scoreTolerance=.65;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const text=(id,t)=>{const e=$(id);if(e.textContent!==t)e.textContent=t};
+const deg=v=>v*180/Math.PI;
+const dot=(a,b)=>a.x*b.x+a.y*b.y;
+const plus=(a,b,k=1)=>({x:a.x+b.x*k,y:a.y+b.y*k});
+function configureRoad(angle=90,arcLength=5.03,halfWidth=3.3,approach=8.5){
+ const a=ROAD; a.theta=angle*Math.PI/180;a.cornerR=arcLength/a.theta;
+ a.arcLength=arcLength;a.halfW=halfWidth;a.approach=approach;
+ a.d={x:-Math.sin(a.theta),y:Math.cos(a.theta)};
+ a.n={x:-Math.cos(a.theta),y:-Math.sin(a.theta)};
+ a.cx=a.mainL-a.cornerR;
+ a.cy=a.origin.y+(a.halfW+a.cornerR-a.n.x*a.cx)/a.n.y;
+ a.centre={x:a.cx,y:a.cy};a.startKerb={x:a.mainL,y:a.cy};
+ a.endKerb={x:a.cx+a.cornerR*Math.cos(a.theta),y:a.cy+a.cornerR*Math.sin(a.theta)};
+ a.upperFar=plus(a.endKerb,a.d,60);
+ const lowerPoint=plus(a.origin,a.n,-a.halfW);
+ const s=(a.mainL-lowerPoint.x)/a.d.x;
+ a.lowerJoin=plus(lowerPoint,a.d,s);a.lowerFar=plus(a.lowerJoin,a.d,60);
+ a.upperJoin=plus(a.endKerb,a.d,(a.mainL-a.endKerb.x)/a.d.x);
+ a.guideR=a.cornerR+1.35;
+ TURN={x:a.cx+a.guideR,y:a.cy};
+ START={x:TURN.x,y:TURN.y-a.approach,angle:-Math.PI/2,steer:0};
+ a.idealEnd={x:a.cx+a.guideR*Math.cos(a.theta),y:a.cy+a.guideR*Math.sin(a.theta)};
+ a.targetAngle=a.theta-Math.PI/2;
+ guide=idealPoints();
+ const label=angle<84?'open':angle>96?'tight':'standard';
+ text('course-heading',angle+'° · '+label+' bend');text('course-badge',angle+'° CORNER');
+ text('road-angle',angle+'°');text('road-length',arcLength.toFixed(1)+' m');
+ text('course-detail','Kerb radius '+a.cornerR.toFixed(1)+' m · road '+(2*halfWidth).toFixed(1)+' m wide');
+}
+function reset(){car={...START};demo=false;moving=0;collision=false;success=false;phase='pick';chosenY=null;actualTurnY=null;history=[{x:car.x,y:car.y}];$('demo').textContent='▶ Watch ideal run';$('reverse').classList.remove('pressed');$('forward').classList.remove('pressed');updateControls();updateTurnQuiz();updateCoach();drawMirror();}
+function turnGrade(delta){let abs=Math.abs(delta);return abs<=.35?'Excellent':abs<=scoreTolerance?'Very close':abs<=1.35?'Close — adjust next try':'Needs adjustment';}
+function describeTurn(delta){return Math.abs(delta)<=.14?'right on the reference point':Math.abs(delta).toFixed(2)+' m '+(delta<0?'early':'late');}
+function updateTurnQuiz(){
+ const score=$('turn-score'),ready=chosenY!==null,delta=ready?chosenY-TURN.y:0;
+ $('change-turn').hidden=!ready||phase!=='feedback';$('start-turn').disabled=phase!=='feedback';$('start-turn').hidden=phase==='drive';$('demo').disabled=phase!=='drive';
+ $('reverse').disabled=phase!=='drive';$('forward').disabled=phase!=='drive';$('reverse-stage').disabled=phase!=='drive';
+ $('wheel').disabled=phase!=='drive';$('left').disabled=phase!=='drive';$('center').disabled=phase!=='drive';$('right').disabled=phase!=='drive';
+ $('touch-left').disabled=phase!=='drive';$('touch-right').disabled=phase!=='drive';
+ $('game').classList.toggle('is-picking',phase==='pick'||phase==='feedback');
+ $('pick-overlay').classList.toggle('in-drive',phase==='drive');
+ if(phase==='pick'){
+   text('turn-title','Where would you start turning?');text('turn-description','Tap/click the road behind the 308 where you think you should start steering left. The ideal marker is hidden.');
+   text('pick-stage','STEP 1 OF 3 · PREDICT');text('pick-prompt','Click the road to choose your turn-in point');text('pick-sub','The correct point is hidden until you make a guess.');
+ }else if(phase==='feedback'){
+   text('turn-title',turnGrade(delta)+' choice');text('turn-description','Your cyan marker is '+describeTurn(delta)+'. Orange shows the model’s ideal reference for this road. You can move your choice or begin driving.');
+   text('pick-stage','STEP 2 OF 3 · FEEDBACK');text('pick-prompt',turnGrade(delta)+' · '+describeTurn(delta));text('pick-sub','Blue = your choice  •  Orange = reference');
+ }else{
+   text('turn-title','Now test your timing');text('turn-description','Reverse straight, steer progressively left as the rear axle nears your chosen point, and follow the kerb in the mirror.');
+   text('pick-stage','STEP 3 OF 3 · DRIVE');text('pick-prompt','Reverse slowly around the corner');text('pick-sub','Compare your actual steering start with your prediction.');
+ }
+ score.classList.toggle('visible',ready);score.classList.toggle('good',ready&&Math.abs(delta)<=scoreTolerance);score.classList.toggle('warning',ready&&Math.abs(delta)>scoreTolerance);
+ if(ready)score.innerHTML='<span class="offset">'+(Math.abs(delta)<=.14?'✓ Almost exact':Math.abs(delta).toFixed(2)+' m '+(delta<0?'EARLY':'LATE'))+'</span><b>'+turnGrade(delta)+'</b> · The model reference is where the rear axle meets the start of the ideal curved path. It is only a training estimate.';
+ $('actual-turn').hidden=actualTurnY===null;
+ if(actualTurnY!==null)text('actual-turn','Actual steering started '+describeTurn(actualTurnY-TURN.y)+'. '+(Math.abs(actualTurnY-TURN.y)<.65?'Nice timing.':'Compare this with your earlier prediction.'));
+}
+function choosePoint(y){if(phase!=='pick'&&phase!=='feedback')return;chosenY=clamp(y,START.y-.4,TURN.y+3.25);phase='feedback';updateTurnQuiz();updateCoach();}
+function restartSelection(){chosenY=null;actualTurnY=null;phase='pick';updateTurnQuiz();updateCoach();}
+
+function generateNewCorner(){
+ const angles=[65,70,75,80,85,90,95,100,105,110,115];
+ let next=angles[Math.floor(Math.random()*angles.length)];
+ if(next===Math.round(deg(ROAD.theta)))next=angles[(angles.indexOf(next)+1+Math.floor(Math.random()*4))%angles.length];
+ // Curve length is independently randomised. Keep the radius within a plausible,
+ // driveable 2.7–5.7 metre kerb-filleting range at the chosen angle.
+ const theta=next*Math.PI/180;
+ const minLen=Math.max(4.2,2.7*theta),maxLen=Math.min(10.8,5.7*theta);
+ let len=minLen+Math.random()*(maxLen-minLen);
+ const width=3.05+Math.random()*.65, approach=7.6+Math.random()*2.8;
+ configureRoad(next,Math.round(len*10)/10,width,approach);reset();
+}
+function updateControls(){const d=Math.round(deg(car.steer));$('steering-wheel-icon').style.transform='rotate('+(d*2.5)+'deg)';$('wheel').value=d;text('steervalue',(d===0?'0':(d<0?'← '+Math.abs(d):'→ '+d))+'°');text('direction',d===0?'STRAIGHT':d<0?'LEFT '+Math.abs(d)+'°':'RIGHT '+d+'°');}
+function isRoad(x,y){const a=ROAD;
+ if(x>=a.mainL&&x<=a.mainR)return true;
+ const p={x:x-a.origin.x,y:y-a.origin.y},s=dot(p,a.d),q=dot(p,a.n);
+ if(s>=-10&&s<75&&Math.abs(q)<=a.halfW)return true;
+ // The outward area swept between the two tangents and the rounded kerb.
+ if(x<a.mainL&&q>a.halfW){const dx=x-a.cx,dy=y-a.cy,phi=Math.atan2(dy,dx);
+   if(phi>=-1e-7&&phi<=a.theta+1e-7&&dx*dx+dy*dy>=a.cornerR*a.cornerR)return true;
+ }
+ return false;
+}
+function pointsOnCar(c){const f={x:Math.cos(c.angle),y:Math.sin(c.angle)},n={x:Math.sin(c.angle),y:-Math.cos(c.angle)};
+ const pts=[];
+ for(const longitudinal of [-FRONT,-WHEELBASE,-1.45,0,REAR])for(const lateral of [-WIDTH/2,WIDTH/2]){
+   // negative longitudinal advances from rear axle to the car's nose
+   pts.push({x:c.x-longitudinal*f.x+lateral*n.x,y:c.y-longitudinal*f.y+lateral*n.y});
+ }
+ return pts;
+}
+function moveState(c,velocity,dt){let theta=c.angle;
+ const rate=velocity/WHEELBASE*Math.tan(c.steer);
+ if(Math.abs(rate)>1e-7){c.x+=(velocity/rate)*(Math.sin(theta+rate*dt)-Math.sin(theta));c.y+=(velocity/rate)*(-Math.cos(theta+rate*dt)+Math.cos(theta));c.angle=theta+rate*dt;}
+ else{c.x+=Math.cos(theta)*velocity*dt;c.y+=Math.sin(theta)*velocity*dt;}
+}
+// Fix sign conventions: front faces heading angle; reverse velocity is negative;
+// steering LEFT is negative and hence reverse makes car rotate clockwise toward East.
+function update(dt){time+=dt;
+ if(pressLeft||pressRight){const s=(pressRight?1:0)-(pressLeft?1:0);car.steer=clamp(car.steer+s*dt*.7,-MAXSTEER,MAXSTEER);updateControls();}
+ if(demo){moving=-1;
+   // Ideal turn-in starts at the tangent point of the guide curve.
+   if(car.y<TURN.y-.015 && car.angle<-.01)car.steer=0;
+   else if(car.angle<ROAD.targetAngle-.015)car.steer=-Math.atan(WHEELBASE/ROAD.guideR);
+   else car.steer=0;
+   updateControls();
+ }
+ if(phase!=='drive')moving=0;
+ if(moving!==0&&!success){if(moving<0&&actualTurnY===null&&Math.abs(deg(car.steer))>3&&car.y>START.y+.1){actualTurnY=car.y;updateTurnQuiz();}
+ const speed=moving<0?-1.65:1.45,old={...car};moveState(car,speed,dt);
+   const hit=pointsOnCar(car).some(p=>!isRoad(p.x,p.y));
+   if(hit){collision=true;moving=0;car=old;demo=false;$('demo').textContent='▶ Watch ideal run';}
+   else{if(time%0.1<dt)history.push({x:car.x,y:car.y});if(history.length>550)history.shift();if(collision)collision=false;}
+   const p={x:car.x-ROAD.idealEnd.x,y:car.y-ROAD.idealEnd.y};
+   const dist=dot(p,ROAD.d),cross=dot(p,ROAD.n);
+   if(dist>10 &&Math.abs(car.angle-ROAD.targetAngle)<.20&&Math.abs(cross)<1.05&&!collision){success=true;moving=0;demo=false;$('demo').textContent='▶ Watch ideal run';}
+ }
+ updateCoach();
+}
+function updateCoach(){
+ const dist=TURN.y-car.y,rot=clamp(deg(car.angle+Math.PI/2),0,180),target=Math.round(deg(ROAD.theta));
+ text('distance',phase==='pick'?'HIDDEN':dist>0?dist.toFixed(1)+' m':'PASSED');text('angle',Math.round(rot)+'° / '+target+'°');$('progressbar').style.width=clamp((ROAD.approach-Math.max(0,dist))/ROAD.approach*100,0,100)+'%';
+ const coach=$('coach');coach.className='coach';
+ let state='STEP 01 / REVERSE STRAIGHT',heading='Reverse straight first',body='Reverse straight towards the orange reference marker, check the left mirror for the kerb, and keep looking around for hazards. This turn-in point is a guide, not a fixed rule.';
+ if(phase==='pick'){state='PREDICTION CHALLENGE';heading='Where would you start turning?';body='Click/tap the main road to choose a steering point. The model answer stays hidden until you make your guess.';}
+ else if(phase==='feedback'){state='STEP 2 / TURN-IN CHOSEN';heading='Compare your marker';body='Your cyan marker and the reference orange marker are both visible. Review the difference, then press Start reversing.';}
+ else if(success){state='MANOEUVRE COMPLETE';heading='Nicely positioned!';body='You followed a '+target+'° bend with a '+ROAD.arcLength.toFixed(1)+' m curved kerb and finished parallel to the side road. Try another road to compare steering timing.';coach.classList.add('done');}
+ else if(collision){state='KERB / ROAD EDGE';heading='Out of road space';body='Your 308 touched the kerb or left the road. Use Forward to correct, or reset and practise a different steering time.';coach.classList.add('bad');}
+ else if(!guided){state='FREE PRACTICE';heading='Find your own turning point';body='Read the white projected trajectory alongside the kerb moving in the left mirror. Your aim is to finish parallel to the new road.';}
+ else if(rot>target-13){state='STEP 03 / STRAIGHTEN UP';heading='Straighten the wheel';body='The car is becoming parallel with the side road. Ease the wheel back to centre while following the kerb in the mirror.';coach.classList.add('urgent');}
+ else if(rot>8){state='STEP 02 / FOLLOW THE CURVE';heading='Follow the '+target+'° bend';body='Keep slowly reversing while adjusting left lock. The rear should trace the bend while the front swings outward.';}
+ else if(dist<=.65&&dist>=-.9){state='TURNING POINT REACHED';heading='TURN LEFT NOW';body='Suggested turning point reached. Start progressively steering left as needed to follow this bend; keep checking around the car.';coach.classList.add('urgent');}
+ else if(dist<-.9){state='LATE TURN-IN';heading='You passed the marker';body='Your rear axle went past the suggested turning point. The projection will show how far outside the ideal line you may travel.';coach.classList.add('urgent');}
+ else if(deg(car.steer)<-6){state='EARLY TURN-IN';heading='Not quite yet';body='You are steering before the marker. Watch whether the left mirror kerb comes too close as you start backing.';coach.classList.add('urgent');}
+ else if(dist<2){state='APPROACHING TURN';heading=dist.toFixed(1)+' m to turn-in';body='Continue straight and slowly. When the rear wheel reaches the orange marker, start a progressive left turn.';}
+ text('coach-state',state);text('coach-title',heading);text('coach-text',body);
+}
+let dw=0,dh=0,dpr=1,scale=1,tx=0,ty=0;
+function resize(){const r=canvas.getBoundingClientRect();dw=Math.max(1,r.width);dh=Math.max(1,r.height);dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(dw*dpr);canvas.height=Math.round(dh*dpr);
+  scale=Math.min(dw/(dw<620?30:36.5),dh/(dw<620?31:35.5));tx=dw*.5-(-2.25)*scale;ty=dh*.5-(-2)*scale;
+}
+function pathLine(pts){ctx.beginPath();pts.forEach((p,i)=>{if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)});}
+function strokeWorld(pts,color,width,dash=[]){ctx.save();ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);pathLine(pts);ctx.stroke();ctx.restore();}
+function drawPolygon(pts,color){ctx.save();pathLine(pts);ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.restore();}
+function arcPoints(c,r,start,end,step=.025){let ps=[];const n=Math.ceil((end-start)/step);for(let i=0;i<=n;i++){let t=start+(end-start)*i/n;ps.push({x:c.x+r*Math.cos(t),y:c.y+r*Math.sin(t)});}return ps;}
+function kerbLines(){const a=ROAD;return [
+ [{x:a.mainL,y:-35},a.startKerb],
+ [a.endKerb,a.upperFar],
+ [a.lowerJoin,a.lowerFar],
+ [{x:a.mainL,y:a.lowerJoin.y},{x:a.mainL,y:35}],
+ [{x:a.mainR,y:-35},{x:a.mainR,y:35}],
+ arcPoints(a.centre,a.cornerR,0,a.theta,.023)
+];}
+function drawBackground(){const a=ROAD;ctx.fillStyle='#203b36';ctx.fillRect(-48,-42,88,85);
+ ctx.strokeStyle='#99cdb008';ctx.lineWidth=.022;ctx.beginPath();for(let x=-48;x<40;x+=1.3){ctx.moveTo(x,-42);ctx.lineTo(x,43);}for(let y=-42;y<43;y+=1.3){ctx.moveTo(-48,y);ctx.lineTo(40,y);}ctx.stroke();
+ // Sidewalk underlays follow the randomly rotated roads.
+ for(const line of kerbLines()){strokeWorld(line,'#83908e',.71);}
+ ctx.fillStyle='#303e4b';ctx.fillRect(a.mainL,-42,a.mainR-a.mainL,84);
+ const upperNear=plus(a.origin,a.n,a.halfW),lowerNear=plus(a.origin,a.n,-a.halfW);
+ drawPolygon([plus(upperNear,a.d,-10),plus(upperNear,a.d,65),plus(lowerNear,a.d,65),plus(lowerNear,a.d,-10)],'#303e4b');
+ // Fill the triangle outside the tangent circular kerb but inside the main/side road junction.
+ drawPolygon([a.startKerb,...arcPoints(a.centre,a.cornerR,0,a.theta),a.upperJoin],'#303e4b');
+ // Faint centreline striping for the main carriageway.
+ ctx.save();ctx.lineCap='butt';ctx.setLineDash([1.8,1.5]);ctx.strokeStyle='#e7e4c666';ctx.lineWidth=.085;ctx.beginPath();ctx.moveTo(8,-42);ctx.lineTo(8,43);ctx.stroke();ctx.restore();
+ const centrePoints=[plus(a.origin,a.d,-9),plus(a.origin,a.d,60)];strokeWorld(centrePoints,'#e7e4c566',.08,[1.8,1.5]);
+ for(const line of kerbLines()){strokeWorld(line,'#121e27',.32);strokeWorld(line,'#bac5c6',.12);}
+ // Boundary walls and understated greenery are tied to the edge geometry.
+ strokeWorld([plus(a.upperFar,a.n,1.3),plus(a.endKerb,a.n,1.3)],'#819a8650',.11,[.8,.18]);
+ strokeWorld([plus(a.lowerFar,a.n,-1.3),plus(a.lowerJoin,a.n,-1.3)],'#819a8650',.11,[.8,.18]);
+ for(let i=0;i<19;i++){let s=3+i*.95;let edge=i%2===0?a.endKerb:a.lowerJoin;let side=i%2===0?1:-1;let pos=plus(plus(edge,a.d,s),a.n,side*(2+(i*7%5)*.34));ctx.beginPath();ctx.fillStyle=i%2?'#2c5647':'#325d49';ctx.arc(pos.x,pos.y,.28+(i%3)*.1,0,Math.PI*2);ctx.fill();}
+ ctx.save();ctx.fillStyle='#d8e2e86b';ctx.font='.67px sans-serif';ctx.textAlign='center';ctx.fillText('MAIN ROAD',9.85,-7.2);
+ const namePos=plus(a.idealEnd,a.d,11);ctx.translate(namePos.x,namePos.y);ctx.rotate(Math.atan2(a.d.y,a.d.x)-Math.PI);ctx.fillText('SIDE ROAD · '+Math.round(deg(a.theta))+'° LEFT REVERSE',0,0);ctx.restore();
+}
+function idealPoints(){const a=ROAD,straight=[],turn=[],end=[];for(let y=START.y;y<=TURN.y;y+=.14)straight.push({x:TURN.x,y});straight.push({...TURN});for(let t=0;t<=a.theta+.001;t+=.027)turn.push({x:a.cx+a.guideR*Math.cos(t),y:a.cy+a.guideR*Math.sin(t)});turn.push({...a.idealEnd});for(let s=0;s<=22;s+=.14)end.push(plus(a.idealEnd,a.d,s));return {straight,turn,end};}
+function drawGuide(){if(phase==='pick')return;if(!guided&&phase==='drive')return;
+ const path=[...guide.straight,...guide.turn,...guide.end];
+ ctx.save();ctx.shadowColor='#65eeaf';ctx.shadowBlur=.25;strokeWorld(path,'#58e1d340',.53);ctx.restore();
+ strokeWorld(guide.straight,'#a6f36e',.14,[.38,.18]);strokeWorld(guide.turn,'#fed074',.18,[.29,.16]);strokeWorld(guide.end,'#a6f36e',.14,[.38,.18]);
+ for(let d=1;d<path.length;d+=8){const p=path[d],next=path[Math.min(d+3,path.length-1)];const an=Math.atan2(next.y-p.y,next.x-p.x);ctx.save();ctx.translate(p.x,p.y);ctx.rotate(an);ctx.strokeStyle='#f8ffffaa';ctx.lineWidth=.065;ctx.beginPath();ctx.moveTo(-.09,-.15);ctx.lineTo(.09,0);ctx.lineTo(-.09,.15);ctx.stroke();ctx.restore();}
+ ctx.save();ctx.shadowColor='#ffb84e';ctx.shadowBlur=.38;ctx.beginPath();ctx.arc(TURN.x,TURN.y,.4,0,2*Math.PI);ctx.fillStyle='#ffb94c';ctx.fill();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(TURN.x,TURN.y,.18,0,2*Math.PI);ctx.fillStyle='#19202a';ctx.fill();ctx.strokeStyle='#ffcd7a8e';ctx.lineWidth=.06;ctx.beginPath();ctx.arc(TURN.x,TURN.y,.9,0,2*Math.PI);ctx.stroke();ctx.font='bold .64px system-ui';ctx.textAlign='left';ctx.fillStyle='#ffe5a8';ctx.fillText('TURN IN',TURN.x+.66,TURN.y-.16);ctx.font='.4px system-ui';ctx.fillStyle='#d5c097';ctx.fillText('REAR AXLE AT BEND',TURN.x+.66,TURN.y+.37);ctx.restore();
+ const gate=plus(ROAD.idealEnd,ROAD.d,10);ctx.save();ctx.font='bold .46px system-ui';ctx.fillStyle='#b2f6b7';ctx.textAlign='center';ctx.fillText('FINISH',gate.x+ROAD.d.x*1.8,gate.y+ROAD.d.y*1.8);strokeWorld([plus(gate,ROAD.n,-ROAD.halfW),plus(gate,ROAD.n,ROAD.halfW)],'#b2f6b788',.08,[.3,.24]);ctx.restore();
+}
+function drawSelectedPoint(){
+ if(phase==='pick'){
+   strokeWorld([{x:TURN.x,y:START.y-1},{x:TURN.x,y:TURN.y+3.25}],'#63dff044',.11,[.21,.21]);
+   ctx.save();ctx.font='bold .65px system-ui';ctx.textAlign='center';ctx.fillStyle='#c8f5f7';ctx.fillText('TAP THIS APPROACH',TURN.x,START.y-1.4);ctx.restore();return;
+ }
+ if(chosenY===null)return;
+ ctx.save();ctx.shadowColor='#33dffe';ctx.shadowBlur=.28;ctx.beginPath();ctx.arc(TURN.x,chosenY,.46,0,2*Math.PI);ctx.fillStyle='#4adefa';ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#082333';ctx.beginPath();ctx.arc(TURN.x,chosenY,.23,0,2*Math.PI);ctx.fill();
+ ctx.font='bold .59px system-ui';ctx.textAlign='right';ctx.fillStyle='#b4faff';ctx.fillText('YOUR TURN',TURN.x-.64,chosenY-.28);
+ if(Math.abs(chosenY-TURN.y)>.12){ctx.strokeStyle='#7feffb';ctx.setLineDash([.13,.14]);ctx.lineWidth=.08;ctx.beginPath();ctx.moveTo(TURN.x-.50,chosenY);ctx.lineTo(TURN.x-.50,TURN.y);ctx.stroke();}
+ ctx.restore();
+}
+function rearTrack(c,length,angle){const test={...c},a=[];for(let i=0;i<=65;i++){a.push({x:test.x,y:test.y,angle:test.angle});moveState(test,-length/65,(1));}return a;}
+function drawProjection(){const predicted=rearTrack(car,7);let l=[],r=[],mid=[];
+ for(const p of predicted){const nx=Math.sin(p.angle),ny=-Math.cos(p.angle);l.push({x:p.x+nx*WIDTH/2,y:p.y+ny*WIDTH/2});r.push({x:p.x-nx*WIDTH/2,y:p.y-ny*WIDTH/2});mid.push({x:p.x,y:p.y});}
+ strokeWorld(l,'#fafdfb5d',.08,[.28,.22]);strokeWorld(r,'#fafdfb5d',.08,[.28,.22]);
+ ctx.save();ctx.shadowColor='#c5f9ff';ctx.shadowBlur=.22;strokeWorld(mid,'#effcff',.11,[.2,.20]);ctx.restore();
+ for(let i=10;i<mid.length;i+=11){let p=mid[i],q=mid[Math.min(i+1,mid.length-1)],a=Math.atan2(q.y-p.y,q.x-p.x);ctx.save();ctx.translate(p.x,p.y);ctx.rotate(a);ctx.strokeStyle='#fff';ctx.lineWidth=.07;ctx.beginPath();ctx.moveTo(-.22,-.15);ctx.lineTo(0,0);ctx.lineTo(-.22,.15);ctx.stroke();ctx.restore();}
+ const end=predicted[predicted.length-1];drawCar(end,.2,false);
+}
+function rounded(x,y,w,h,r){const a=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+a,y);ctx.lineTo(x+w-a,y);ctx.quadraticCurveTo(x+w,y,x+w,y+a);ctx.lineTo(x+w,y+h-a);ctx.quadraticCurveTo(x+w,y+h,x+w-a,y+h);ctx.lineTo(x+a,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-a);ctx.lineTo(x,y+a);ctx.quadraticCurveTo(x,y,x+a,y);ctx.closePath();}
+function drawCar(c,opacity=1,features=true){ctx.save();ctx.globalAlpha=opacity;ctx.translate(c.x,c.y);ctx.rotate(c.angle+Math.PI/2);
+ // Car shadow
+ ctx.save();ctx.translate(.11,.14);ctx.fillStyle='#071116b2';ctx.shadowColor='#000';ctx.shadowBlur=.29;rounded(-.94,-3.52,1.88,4.27,.38);ctx.fill();ctx.restore();
+ // Wheels: front pair visually steered, rear fixed
+ for(const side of [-1,1])for(const position of [-WHEELBASE,0]){ctx.save();ctx.translate(side*.77,position);if(position<0)ctx.rotate(c.steer);ctx.fillStyle='#091115';rounded(-.2,-.42,.4,.84,.12);ctx.fill();ctx.strokeStyle='#8ba0ae';ctx.lineWidth=.045;ctx.stroke();ctx.restore();}
+ // Metallic cobalt blue 2010 Peugeot 308 5-door, adapted from user's photo
+ const g=ctx.createLinearGradient(-.95,0,.95,0);g.addColorStop(0,'#0d2f6e');g.addColorStop(.18,'#275aa6');g.addColorStop(.5,'#4c80c7');g.addColorStop(.82,'#2760ad');g.addColorStop(1,'#102e64');ctx.fillStyle=g;rounded(-.91,-3.534,1.82,4.276,.38);ctx.fill();ctx.lineWidth=.065;ctx.strokeStyle='#abcaff88';ctx.stroke();
+ // Bonnet and bonnet shutline
+ ctx.fillStyle='#3268b4';rounded(-.75,-3.37,1.5,1.07,.27);ctx.fill();ctx.strokeStyle='#19477f';ctx.lineWidth=.045;ctx.beginPath();ctx.moveTo(-.82,-2.55);ctx.lineTo(.82,-2.55);ctx.stroke();
+ // Windscreen, front pointing toward negative y
+ ctx.fillStyle='#1b3443';ctx.beginPath();ctx.moveTo(-.65,-2.46);ctx.lineTo(.65,-2.46);ctx.lineTo(.71,-1.71);ctx.quadraticCurveTo(0,-1.54,-.71,-1.71);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#739da44d';ctx.beginPath();ctx.moveTo(-.6,-2.42);ctx.lineTo(.35,-2.42);ctx.lineTo(-.45,-1.72);ctx.lineTo(-.65,-1.72);ctx.closePath();ctx.fill();
+ // Roof + glass side windows
+ ctx.fillStyle='#2a64b2';rounded(-.69,-1.72,1.38,1.5,.17);ctx.fill();
+ for(const s of [-1,1]){ctx.fillStyle='#1a3546';ctx.beginPath();ctx.moveTo(s*.71,-1.64);ctx.lineTo(s*.77,-.27);ctx.lineTo(s*.59,-.27);ctx.lineTo(s*.56,-1.54);ctx.closePath();ctx.fill();}
+ ctx.fillStyle='#223f4c';ctx.beginPath();ctx.moveTo(-.61,-.25);ctx.lineTo(.61,-.25);ctx.lineTo(.67,.4);ctx.lineTo(-.67,.4);ctx.closePath();ctx.fill();
+ // Window lines and rear spoiler
+ ctx.strokeStyle='#324a58';ctx.lineWidth=.05;ctx.beginPath();ctx.moveTo(-.75,-.73);ctx.lineTo(-.54,-.73);ctx.moveTo(.75,-.73);ctx.lineTo(.54,-.73);ctx.moveTo(-.65,.44);ctx.lineTo(.65,.44);ctx.stroke();
+ ctx.fillStyle='#123b7e';rounded(-.8,.5,1.6,.12,.06);ctx.fill();
+ // Side mirrors, right hand steering wheel visible
+ ctx.fillStyle='#2e69b7';rounded(-1.1,-2.32,.27,.38,.1);ctx.fill();rounded(.83,-2.32,.27,.38,.1);ctx.fill();
+ // Visible right-hand-drive steering wheel at the front-right cockpit
+ ctx.strokeStyle='#d0eaff';ctx.lineWidth=.085;ctx.beginPath();ctx.arc(.38,-1.92,.235,0,Math.PI*2);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(.18,-1.96);ctx.lineTo(.56,-1.88);ctx.moveTo(.38,-1.92);ctx.lineTo(.38,-1.74);ctx.stroke();
+ ctx.fillStyle='#eaf6ff';ctx.font='bold .12px system-ui';ctx.fillText('RHD',.37,-1.55);
+ // 2010 308 headlights: long almond shapes
+ ctx.fillStyle='#fff9dc';ctx.shadowColor='#f7fff2';ctx.shadowBlur=.12;ctx.beginPath();ctx.ellipse(-.62,-3.31,.19,.28,-.26,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(.62,-3.31,.19,.28,.26,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ // Rear red tail lamps
+ ctx.fillStyle='#ef5660';ctx.beginPath();ctx.ellipse(-.74,.52,.115,.21,-.4,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(.74,.52,.115,.21,.4,0,Math.PI*2);ctx.fill();
+ // Lion badge suggestion on bonnet and 308 on tailgate
+ ctx.fillStyle='#344f59';ctx.font='bold .18px system-ui';ctx.textAlign='center';ctx.fillText('♛',0,-3.1);ctx.font='bold .14px system-ui';ctx.fillText('308',.29,.66);
+ if(features){ctx.fillStyle='#ffce6a';ctx.beginPath();ctx.arc(0,0,.14,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ffce6a';ctx.lineWidth=.055;ctx.beginPath();ctx.moveTo(-1.22,0);ctx.lineTo(1.22,0);ctx.stroke();}
+ ctx.restore();}
+// Adjustable left-hand mirror. This is a rear-facing ground-plane projection,
+// with a horizontal yaw shift and vertical tilt, *not* an optical ray-tracer.
+const mirror=$('mirror'),mctx=mirror.getContext('2d',{alpha:false}),mirrorMini=$('mirrormini'),miniCtx=mirrorMini.getContext('2d');let lastMirror=-1000;
+function distSegment(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/Math.max(1e-10,dx*dx+dy*dy),0,1);return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));}
+function leftClearance(){
+ const n={x:Math.sin(car.angle),y:-Math.cos(car.angle)};
+ const p=plus({x:car.x,y:car.y},n,WIDTH/2);
+ const kerb=[{x:ROAD.mainL,y:-40},ROAD.startKerb,...arcPoints(ROAD.centre,ROAD.cornerR,0,ROAD.theta,.045),ROAD.upperFar];
+ let best=Infinity;for(let i=1;i<kerb.length;i++)best=Math.min(best,distSegment(p,kerb[i-1],kerb[i]));return best;
+}
+function bodyEdgeX(y,yaw,W,H){return W*(.925+yaw*.045)-W*.105*Math.max(0,y/H-.15);}
+function mirrorHorizon(tilt,H){return H*(.43-.045*tilt);}
+function updateMirrorControls(){
+ $('mirror-horizontal').value=mirrorAim.yaw;$('mirror-vertical').value=mirrorAim.tilt;
+ text('mirror-h-val',(mirrorAim.yaw>0?'+':'')+mirrorAim.yaw.toFixed(1)+'°');
+ text('mirror-v-val',(mirrorAim.tilt>0?'+':'')+mirrorAim.tilt.toFixed(1)+'°');
+ const target=MIRROR_TARGETS[mirrorGoal],dy=mirrorAim.yaw-target.yaw,dv=mirrorAim.tilt-target.tilt,aligned=Math.abs(dy)<.45&&Math.abs(dv)<.55;
+ const ms=$('mirror-status');ms.classList.toggle('aligned',aligned);
+ let message;
+ if(aligned){message=mirrorGoal==='reverse'?'✓ Good kerb-check view: a small strip of the 308 is visible, with more road/kerb below.':'✓ Good normal view: a small strip of the car and road behind are visible.';}
+ else{const steps=[];if(Math.abs(dy)>=.45)steps.push(dy>0?'aim a little more inward':'aim a little more outward');
+ if(Math.abs(dv)>=.55)steps.push(dv<0?'tilt the mirror down':'tilt the mirror up');
+ message='Adjust the mirror: '+steps.join(' and ')+'. Match the dashed green guides.';}
+ text('mirror-status',message);
+ $('reverse-target').classList.toggle('active',mirrorGoal==='reverse');$('road-target').classList.toggle('active',mirrorGoal==='road');
+ drawMirror();
+}
+function setMirrorGoal(goal){mirrorGoal=goal;updateMirrorControls();}
+function setMirrorAim(goal){mirrorAim={...MIRROR_TARGETS[goal]};updateMirrorControls();}
+function drawMirror(){
+ const W=mirror.width,H=mirror.height,mh=1.23,focal=133,horizon=mirrorHorizon(mirrorAim.tilt,H),cell=3;
+ const sky=mctx.createLinearGradient(0,0,0,Math.max(0,horizon+25));sky.addColorStop(0,'#8dabb8');sky.addColorStop(1,'#38515b');mctx.fillStyle=sky;mctx.fillRect(0,0,W,H);
+ const f={x:Math.cos(car.angle),y:Math.sin(car.angle)},n={x:Math.sin(car.angle),y:-Math.cos(car.angle)};
+ const origin=plus(plus({x:car.x,y:car.y},f,WHEELBASE),n,1.05);
+ const vv=plus({x:-f.x,y:-f.y},n,.14+mirrorAim.yaw*.115),len=Math.hypot(vv.x,vv.y),v={x:vv.x/len,y:vv.y/len};
+ const right={x:v.y,y:-v.x};
+ for(let y=Math.max(0,Math.floor(horizon));y<H;y+=cell){const depth=clamp(mh*focal/Math.max(1,y-horizon+.5),0,65),fade=clamp((depth-10)/50,0,1);
+  for(let x=0;x<W;x+=cell){const lateral=depth*((x+cell*.5)-W*.5)/focal;
+   const p={x:origin.x+depth*v.x+lateral*right.x,y:origin.y+depth*v.y+lateral*right.y};
+   const road=isRoad(p.x,p.y),shift=depth*cell/focal;
+   const edge=road!==isRoad(p.x+right.x*shift*1.3,p.y+right.y*shift*1.3)||road!==isRoad(p.x-right.x*shift*1.3,p.y-right.y*shift*1.3);
+   mctx.fillStyle=edge?'#c4c8bf':road?(fade>.5?'#425564':'#303f4c'):(fade>.5?'#43564b':'#315341');
+   mctx.fillRect(x,y,cell+1,cell+1);
+  }
+ }
+ function proj(p){const z={x:p.x-origin.x,y:p.y-origin.y},dep=dot(z,v);if(dep<=.6||dep>68)return null;return {x:W*.5+focal*dot(z,right)/dep,y:horizon+mh*focal/dep};}
+ mctx.save();mctx.beginPath();mctx.rect(0,horizon,W,H-horizon);mctx.clip();
+ for(const line of kerbLines()){mctx.beginPath();let started=false;for(const p of line){const q=proj(p);if(!q){started=false;continue;}if(!started)mctx.moveTo(q.x,q.y);else mctx.lineTo(q.x,q.y);started=true;}mctx.strokeStyle='#f4e5c7';mctx.lineWidth=2.5;mctx.lineJoin='round';mctx.stroke();}
+ mctx.restore();
+ // Edge of the blue 308 moves as the mirror is aimed inward/outward.
+ const body=mctx.createLinearGradient(W*.75,0,W,0);body.addColorStop(0,'#102f69');body.addColorStop(.6,'#2b69b5');body.addColorStop(1,'#79a5e0');
+ mctx.beginPath();mctx.moveTo(bodyEdgeX(H*.15,mirrorAim.yaw,W,H),H*.15);
+ mctx.bezierCurveTo(bodyEdgeX(H*.4,mirrorAim.yaw,W,H),H*.4,bodyEdgeX(H*.7,mirrorAim.yaw,W,H),H*.7,bodyEdgeX(H,mirrorAim.yaw,W,H),H);
+ mctx.lineTo(W,H);mctx.lineTo(W,H*.13);mctx.closePath();mctx.fillStyle=body;mctx.fill();
+ mctx.beginPath();mctx.moveTo(bodyEdgeX(H*.15,mirrorAim.yaw,W,H),H*.15);
+ mctx.bezierCurveTo(bodyEdgeX(H*.4,mirrorAim.yaw,W,H),H*.4,bodyEdgeX(H*.7,mirrorAim.yaw,W,H),H*.7,bodyEdgeX(H,mirrorAim.yaw,W,H),H);
+ mctx.strokeStyle='#f3f7e7a8';mctx.lineWidth=2;mctx.stroke();
+ // Rear light can appear in the lower part as the left rear quarter becomes visible.
+ const tailX=bodyEdgeX(H*.82,mirrorAim.yaw,W,H)+W*.07;
+ if(tailX<W+9){mctx.fillStyle='#f46370';mctx.beginPath();mctx.ellipse(tailX,H*.83,7.5,14,.25,0,Math.PI*2);mctx.fill();}
+ const gloss=mctx.createLinearGradient(0,0,W,H);gloss.addColorStop(0,'#ffffff13');gloss.addColorStop(.5,'#ffffff00');gloss.addColorStop(1,'#020a1935');mctx.fillStyle=gloss;mctx.fillRect(0,0,W,H);
+ // Green calibration guide: horizon/kerb framing and narrow car-side sliver.
+ const target=MIRROR_TARGETS[mirrorGoal],targetH=mirrorHorizon(target.tilt,H);
+ mctx.save();mctx.setLineDash([5,4]);mctx.lineWidth=1.7;mctx.strokeStyle='#b8fc91';mctx.shadowColor='#b8fc91';mctx.shadowBlur=5;
+ mctx.beginPath();mctx.moveTo(0,targetH);mctx.lineTo(W*.62,targetH);mctx.stroke();
+ mctx.beginPath();for(let y=H*.15;y<=H;y+=6){let x=bodyEdgeX(y,target.yaw,W,H);if(y===H*.15)mctx.moveTo(x,y);else mctx.lineTo(x,y);}mctx.stroke();mctx.restore();
+ mctx.font='bold 9px system-ui';mctx.fillStyle='#d8ffd0';mctx.fillText('TARGET',8,Math.max(13,targetH-6));
+ mctx.font='700 11px system-ui';mctx.fillStyle='#ebf8fbdf';mctx.fillText('LEFT MIRROR • LIVE',13,17);
+ const clearance=leftClearance();text('clearance',clearance.toFixed(2)+' m'+(clearance<.3?' · CLOSE':''));$('clearance').style.color=clearance<.3?'#ffbc70':'#b8f779';
+ miniCtx.drawImage(mirror,0,0,mirrorMini.width,mirrorMini.height);
+}
+function draw(){if(!dw||!dh)resize();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#1c3531';ctx.fillRect(0,0,dw,dh);ctx.translate(tx,ty);ctx.scale(scale,scale);
+ drawBackground();drawGuide();drawSelectedPoint();
+ if(history.length>1&& !demo)strokeWorld(history,'#80dcf055',.12);
+ drawProjection();drawCar(car,1,true);
+ // Existing rear axle + pivot localising circles
+ ctx.save();ctx.strokeStyle='#fff7cf94';ctx.lineWidth=.045;ctx.setLineDash([.18,.16]);ctx.beginPath();ctx.arc(car.x,car.y,.6,0,Math.PI*2);ctx.stroke();ctx.restore();
+}
+function frame(ms){if(!last)last=ms;const dt=Math.min(.033,(ms-last)/1000);last=ms;update(dt);draw();if(ms-lastMirror>120){drawMirror();lastMirror=ms;}requestAnimationFrame(frame);}
+function steerBy(n){if(phase!=='drive')return;car.steer=clamp(car.steer+n*Math.PI/180,-MAXSTEER,MAXSTEER);demo=false;updateControls();updateCoach();}
+$('wheel').addEventListener('input',e=>{if(phase!=='drive')return;car.steer=Number(e.target.value)*Math.PI/180;demo=false;updateControls();});
+$('left').addEventListener('click',()=>steerBy(-5));$('right').addEventListener('click',()=>steerBy(5));$('center').addEventListener('click',()=>{if(phase!=='drive')return;car.steer=0;demo=false;updateControls();});
+$('reset').addEventListener('click',reset);$('newcorner').addEventListener('click',generateNewCorner);
+ $('game').addEventListener('pointerdown',e=>{
+   if(phase!=='pick'&&phase!=='feedback')return;
+   const rect=canvas.getBoundingClientRect(),wx=((e.clientX-rect.left)-tx)/scale,wy=((e.clientY-rect.top)-ty)/scale;
+   if(Math.abs(wx-TURN.x)>3.4 ||wy<START.y-1.4||wy>TURN.y+3.75){text('turn-description','Tap near the dotted cyan line on the main road behind the car. That is the line the rear axle will follow before turning.');return;}
+   choosePoint(wy);
+ });
+ $('change-turn').addEventListener('click',restartSelection);
+ $('start-turn').addEventListener('click',()=>{if(phase!=='feedback')return;phase='drive';updateTurnQuiz();updateCoach();});
+$('mirror-horizontal').addEventListener('input',e=>{mirrorAim.yaw=Number(e.target.value);updateMirrorControls();});
+$('mirror-vertical').addEventListener('input',e=>{mirrorAim.tilt=Number(e.target.value);updateMirrorControls();});
+$('reverse-target').addEventListener('click',()=>setMirrorGoal('reverse'));
+$('road-target').addEventListener('click',()=>setMirrorGoal('road'));
+$('mirror-align').addEventListener('click',()=>setMirrorAim(mirrorGoal));
+$('mirror-drive').addEventListener('click',()=>{mirrorGoal='road';setMirrorAim('road');});
+$('demo').addEventListener('click',()=>{if(phase!=='drive')return;if(demo){demo=false;moving=0;$('demo').textContent='▶ Watch ideal run';return;}car={...START};moving=0;collision=false;success=false;actualTurnY=null;history=[{x:car.x,y:car.y}];demo=true;updateControls();updateTurnQuiz();$('demo').textContent='Ⅱ Pause demo';});
+function setGuided(v){guided=v;$('guided').classList.toggle('active',v);$('free').classList.toggle('active',!v);updateCoach();}
+$('guided').addEventListener('click',()=>setGuided(true));$('free').addEventListener('click',()=>setGuided(false));
+function releasePedals(){if(!demo)moving=0;$('reverse').classList.remove('pressed');$('forward').classList.remove('pressed');}
+// On-screen driving controls remain visible next to the car on small devices.
+for(const [id,direction] of [['touch-left',-1],['touch-right',1]]){
+ const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();if(phase!=='drive')return;demo=false;b.setPointerCapture(e.pointerId);if(direction<0)pressLeft=true;else pressRight=true;});
+ const release=()=>{if(direction<0)pressLeft=false;else pressRight=false;};
+ b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
+}
+const stageReverse=$('reverse-stage');stageReverse.addEventListener('pointerdown',e=>{e.preventDefault();if(phase!=='drive')return;demo=false;moving=-1;stageReverse.setPointerCapture(e.pointerId);stageReverse.classList.add('pressed');});
+const stageRelease=()=>{moving=0;stageReverse.classList.remove('pressed');};
+stageReverse.addEventListener('pointerup',stageRelease);stageReverse.addEventListener('pointercancel',stageRelease);stageReverse.addEventListener('lostpointercapture',stageRelease);
+for(const [id,dir] of [['reverse',-1],['forward',1]]){const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();if(phase!=='drive')return;demo=false;moving=dir;b.setPointerCapture(e.pointerId);b.classList.add('pressed');});b.addEventListener('pointerup',releasePedals);b.addEventListener('pointercancel',releasePedals);b.addEventListener('lostpointercapture',releasePedals);}
+const keys=new Set();window.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp',' '].includes(e.key)){if(document.activeElement?.tagName!=='INPUT')e.preventDefault();}
+ if(document.activeElement?.tagName==='INPUT')return;
+ if(e.key==='r'||e.key==='R')reset();
+ if(e.key==='g'||e.key==='G')setGuided(!guided);
+ keys.add(e.key);pressLeft=phase==='drive'&&keys.has('ArrowLeft');pressRight=phase==='drive'&&keys.has('ArrowRight');
+ if(phase==='drive'&&(keys.has('ArrowDown')||keys.has(' '))){demo=false;moving=-1;}
+ else if(phase==='drive'&&keys.has('ArrowUp')){demo=false;moving=1;}
+});
+window.addEventListener('keyup',e=>{keys.delete(e.key);pressLeft=phase==='drive'&&keys.has('ArrowLeft');pressRight=phase==='drive'&&keys.has('ArrowRight');if(['ArrowDown','ArrowUp',' '].includes(e.key))moving=keys.has('ArrowDown')?-1:keys.has('ArrowUp')?1:0;});
+window.addEventListener('blur',()=>{pressLeft=pressRight=false;keys.clear();releasePedals();stageRelease();});
+window.addEventListener('resize',resize);window.addEventListener('orientationchange',resize);const obs=new ResizeObserver(resize);obs.observe(canvas);
+configureRoad(90,Math.PI/2*3.2);reset();updateMirrorControls();resize();requestAnimationFrame(frame);
+window.__cornerCoach=()=>({phase,chosenY,idealY:TURN.y,actualTurnY,success,collision,demo,angle:Math.round(deg(ROAD.theta)),arcLength:ROAD.arcLength,radius:ROAD.cornerR,mirrorAim,mirrorGoal,car:{...car}});
+
+})();
+</script>
+</body>
+</html>
