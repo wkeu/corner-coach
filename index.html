@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080f19">
-<title>Corner Coach 5 · Choose, then Reverse · Peugeot 308</title>
+<title>Corner Coach 6 · Mobile HUD, mirror and finish · Peugeot 308</title>
 <style>
 :root{color-scheme:dark;--bg:#090f18;--panel:#111d2b;--muted:#93a4b8;--line:#263447;--lime:#aeef5a;--cyan:#4de6e4;--amber:#ffc56d;--white:#edf5ff}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 20% 0%,#192d42 0%,#090f18 52%);color:var(--white);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -123,12 +123,64 @@ button:disabled{opacity:.42;cursor:not-allowed}
  .hintbar{display:none}
  .stage-wrap[data-phase="feedback"] #game{cursor:default}
 }
+
+/* V6 mobile-first: visible steering HUD, tappable live mirror and task-complete sheets */
+.stage-wrap[data-phase="pick"] .wheel-hud,.stage-wrap[data-phase="feedback"] .wheel-hud{display:none}
+.wheel-hud{position:absolute;top:66px;right:16px;z-index:5;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:9px 11px 8px;min-width:96px;border:1px solid #9fc4d270;border-radius:15px;background:linear-gradient(155deg,#0b1a29eb,#112c39ed);box-shadow:0 9px 28px #0008}
+.wheel-hud .wheel-hud-label{font-size:9px;font-weight:900;letter-spacing:.13em;color:#9dbac8}
+.wheel-hud svg{width:60px;height:60px;transition:transform .09s linear;filter:drop-shadow(0 3px 6px #0009)}
+.wheel-hud strong{font-weight:950;font-variant-numeric:tabular-nums;line-height:1;font-size:20px;color:#e5ffff}
+.wheel-hud small{font-size:9px;color:#aeefce;font-weight:800;letter-spacing:.04em}
+.mirror-inset{pointer-events:auto;z-index:5;cursor:pointer;border-color:#9adbdc;transition:border-color .18s,transform .18s}
+.mirror-inset:focus-visible{outline:3px solid #c4fb83;outline-offset:3px}
+.mirror-inset:active{transform:scale(.98)}
+.mirror-inset .mirror-tap{position:absolute;bottom:2px;left:4px;right:4px;padding:5px 2px 4px;color:#fff;font-weight:900;font-size:9px;letter-spacing:.04em;text-align:center;background:linear-gradient(transparent,#07131ce5);text-shadow:0 1px 5px #000;pointer-events:none}
+.overlay-sheet[hidden]{display:none!important}
+.overlay-sheet{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#050d15dc;padding:16px;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.overlay-card{width:min(440px,100%);max-height:min(94dvh,900px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #6d9cb5;border-radius:21px;background:linear-gradient(155deg,#183144 0%,#0c1b2b 100%);padding:21px;box-shadow:0 28px 80px #000c}
+.overlay-eyebrow{font-size:10px;font-weight:950;letter-spacing:.15em;color:#a8e8c3}
+.overlay-card h2{font-size:clamp(24px,6vw,30px);line-height:1.06;letter-spacing:-.045em;margin:9px 0 10px}
+.overlay-card p{color:#c1d5e0;font-size:13px;line-height:1.5;margin:0 0 15px}
+.overlay-summary{border:1px solid #416478;background:#0d2231;border-radius:12px;padding:12px 13px;color:#b9d2dd;font-size:12px;margin:12px 0 18px}
+.overlay-summary strong{display:block;color:#effeff;font-size:16px;line-height:1.35}
+.overlay-actions{display:flex;gap:9px}.overlay-actions button{flex:1;min-height:52px;border-radius:12px;font-weight:900;border:1px solid #648193;background:#243b4e;color:#ecf8ff;padding:12px 9px}
+.overlay-actions button.primary{background:#bdf77b;color:#10231b;border:1px solid #bdf77b;box-shadow:0 3px 18px #a0ff5f22}
+.mirror-card{width:min(500px,100%)}
+.overlay-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.overlay-close{flex:none;width:37px;height:37px;border-radius:50%;background:#233c4e;color:white;border:1px solid #557085;font-size:21px;line-height:1}
+.mirror-large{border:6px solid #253e50;border-bottom-width:11px;overflow:hidden;border-radius:18px 18px 32px 32px;box-shadow:inset 0 2px 9px #0008,0 8px 16px #0005;background:#233f4b}
+.mirror-large canvas{display:block;width:100%;height:auto;aspect-ratio:288/152}
+.mirror-adjust-hint{font-size:11px;color:#adc3d2;margin:8px 0 12px;line-height:1.5}
+.mirror-form{background:#0b1d2e;border:1px solid #3a586a;border-radius:13px;padding:11px 14px}
+.mirror-form label{display:flex;justify-content:space-between;align-items:center;font-weight:850;color:#e0f0f5;font-size:12px;margin-top:7px}
+.mirror-form input[type=range]{width:100%;accent-color:#aafa70;height:26px;cursor:pointer;margin:4px 0 9px}
+.mirror-form output{font-weight:950;color:#c4fb90}
+.mirror-form-status{border-radius:10px;background:#28321f;border:1px solid #827846;padding:9px 11px;color:#ffe9ac;font-size:12px;line-height:1.45;margin:5px 0 12px}
+.mirror-form-status.aligned{background:#18392c;border-color:#4d936d;color:#c5f8d6}
+.mirror-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.mirror-controls button{background:#203d50;color:#e4f4ef;border:1px solid #557b87;border-radius:10px;min-height:43px;font-weight:850;font-size:11px}
+body.has-modal{overflow:hidden}
+@media(max-width:620px){
+ .wheel-hud{top:62px;right:9px;min-width:98px;padding:7px 8px 8px;gap:1px;border-radius:12px}
+ .wheel-hud svg{width:51px;height:51px}
+ .wheel-hud strong{font-size:17px}
+ .wheel-hud .wheel-hud-label{font-size:8px}
+ .wheel-hud small{font-size:8px}
+ .mirror-inset{top:62px;width:143px}
+ .mirror-inset .mirror-tap{font-size:8px}
+ .overlay-sheet{align-items:flex-end;padding:0}
+ .overlay-card{width:100%;max-height:94dvh;border-radius:23px 23px 0 0;padding:20px 18px calc(21px + env(safe-area-inset-bottom));border-bottom:0}
+ .overlay-card h2{font-size:26px}
+ .overlay-actions button{min-height:56px;font-size:14px}
+}
+@media(max-height:640px){.overlay-card{max-height:97dvh}.overlay-card h2{font-size:22px}.overlay-card p{margin-bottom:8px}.overlay-summary{margin:7px 0 12px}.mirror-form input[type=range]{margin:0 0 4px}}
+
 </style>
 </head>
 <body>
 <div class="shell">
  <header class="header"><div><div class="eyebrow">Driver training / Interactive</div><h1>CORNER <em>COACH.</em></h1></div><div class="head-tags"><span>BLUE PEUGEOT 308 · 2010</span><span>IRISH LEFT-HAND REVERSE</span><span id="course-badge">90° CORNER</span><span class="live">● LIVE PHYSICS</span></div></header>
- <div class="layout"><section class="stage"><div class="exercise-progress" aria-label="Two practice exercises"><span id="step-choose" class="active">1 · Choose turn point</span><span id="step-reverse">2 · Reverse the corner</span></div><div class="stage-wrap" id="stage-wrap" data-phase="pick"><canvas id="game" aria-label="Top down driving simulation: reverse a Peugeot 308 around a left corner"></canvas><div class="screenwash"></div><div class="mobile-lesson" id="mobile-lesson" data-result="good" aria-live="polite"><div class="lesson-eyebrow" id="mobile-lesson-step">EXERCISE 1 OF 2 · YOUR TURN</div><div class="pick-help"><div class="lesson-title">Tap where you would start steering</div><div class="lesson-help">Pick a point on the dotted road line, just behind the blue 308.</div></div><div class="mobile-result" id="mobile-result"><div class="result-value" id="mobile-result-value">—</div><div class="result-explain" id="mobile-result-explain">Blue = your point · Orange = reference</div><div class="mobile-actions"><button id="mobile-retry" type="button">↺ Try again</button><button id="mobile-ready" type="button">Ready to reverse →</button></div></div></div><div id="pick-overlay" class="pick-overlay"><span id="pick-stage">STEP 1 OF 3</span><strong id="pick-prompt">Tap the road where you would start steering left</strong><span id="pick-sub">Choose the turning point before you drive. The answer is hidden!</span></div><div class="mirror-inset"><canvas id="mirrormini" width="288" height="152" aria-label="Live miniature left mirror"></canvas></div><div class="mobile-stage-controls"><div class="mobile-wheel"><button type="button" id="touch-left" aria-label="Hold to turn steering left">↶ LEFT</button><button type="button" id="touch-right" aria-label="Hold to turn steering right">RIGHT ↷</button></div><button class="mobile-reverse" id="reverse-stage" type="button">↓ HOLD REVERSE</button></div><div class="canvas-top"><strong id="canvas-heading">01 / CHOOSE YOUR TURN POINT</strong><div id="canvas-subheading">TAP THE ROAD · REVIEW YOUR ANSWER</div></div><div class="canvas-bottom"><div class="legend"><span><i class="key"></i>Ideal line</span><span><i class="key proj"></i>Projected reverse path</span><span><i class="key" style="background:#ffcb69"></i>Reference point</span></div><div class="corner-tag">308 / REAR-AXLE MODEL</div></div></div><div class="hintbar"><span>Desktop: <b class="kbd">←</b> <b class="kbd">→</b> steer · hold <b class="kbd">↓</b> to reverse · <b class="kbd">↑</b> forward</span><span>Tap controls on phone / tablet</span></div></section>
+ <div class="layout"><section class="stage"><div class="exercise-progress" aria-label="Two practice exercises"><span id="step-choose" class="active">1 · Choose turn point</span><span id="step-reverse">2 · Reverse the corner</span></div><div class="stage-wrap" id="stage-wrap" data-phase="pick"><canvas id="game" aria-label="Top down driving simulation: reverse a Peugeot 308 around a left corner"></canvas><div class="screenwash"></div><div class="mobile-lesson" id="mobile-lesson" data-result="good" aria-live="polite"><div class="lesson-eyebrow" id="mobile-lesson-step">EXERCISE 1 OF 2 · YOUR TURN</div><div class="pick-help"><div class="lesson-title">Tap where you would start steering</div><div class="lesson-help">Pick a point on the dotted road line, just behind the blue 308.</div></div><div class="mobile-result" id="mobile-result"><div class="result-value" id="mobile-result-value">—</div><div class="result-explain" id="mobile-result-explain">Blue = your point · Orange = reference</div><div class="mobile-actions"><button id="mobile-retry" type="button">↺ Try again</button><button id="mobile-ready" type="button">Ready to reverse →</button></div></div></div><div id="pick-overlay" class="pick-overlay"><span id="pick-stage">STEP 1 OF 3</span><strong id="pick-prompt">Tap the road where you would start steering left</strong><span id="pick-sub">Choose the turning point before you drive. The answer is hidden!</span></div><button id="mirror-open" class="mirror-inset" type="button" aria-label="Adjust the left mirror; opens a larger view"><canvas id="mirrormini" width="288" height="152" aria-hidden="true"></canvas><span class="mirror-tap">↗ TAP TO ADJUST</span></button><div class="wheel-hud" aria-live="off"><span class="wheel-hud-label">STEERING WHEEL</span><svg id="hud-steering-wheel" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="31" fill="#111b27" stroke="#c8deea" stroke-width="7"/><path d="M11 33 Q40 44 69 33 M40 40 L40 67 M40 38 L28 51 M40 38 L52 51" fill="none" stroke="#9fb3c4" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="40" r="12" fill="#294157" stroke="#d3e3ed" stroke-width="2"/><path d="M35 39 L45 39 M40 33 L40 46" stroke="#f3f8fa" stroke-width="2"/></svg><strong id="hud-wheel-deg">0°</strong><small id="hud-wheel-dir">STRAIGHT</small></div><div class="mobile-stage-controls"><div class="mobile-wheel"><button type="button" id="touch-left" aria-label="Hold to turn steering left">↶ LEFT</button><button type="button" id="touch-right" aria-label="Hold to turn steering right">RIGHT ↷</button></div><button class="mobile-reverse" id="reverse-stage" type="button">↓ HOLD REVERSE</button></div><div class="canvas-top"><strong id="canvas-heading">01 / CHOOSE YOUR TURN POINT</strong><div id="canvas-subheading">TAP THE ROAD · REVIEW YOUR ANSWER</div></div><div class="canvas-bottom"><div class="legend"><span><i class="key"></i>Ideal line</span><span><i class="key proj"></i>Projected reverse path</span><span><i class="key" style="background:#ffcb69"></i>Reference point</span></div><div class="corner-tag">308 / REAR-AXLE MODEL</div></div></div><div class="hintbar"><span>Desktop: <b class="kbd">←</b> <b class="kbd">→</b> steer · hold <b class="kbd">↓</b> to reverse · <b class="kbd">↑</b> forward</span><span>Tap controls on phone / tablet</span></div></section>
  <aside class="side"><div class="course-panel"><div class="course-info"><small>GENERATED ROAD / NEW CHALLENGE</small><strong id="course-heading">90° · standard bend</strong><div class="course-stats"><div class="course-stat"><span>Corner angle</span><strong id="road-angle">90°</strong></div><div class="course-stat"><span>Kerb curve length</span><strong id="road-length">5.0 m</strong></div></div><div class="course-subtitle" id="course-detail">Radius 3.2 m · standard-width road</div></div><button id="newcorner" type="button">⤨ New corner</button></div><section class="panel" id="driver-panel"><div class="small-head"><span>Driving instructor</span><span>2 EXERCISES</span></div><div class="segmented"><button id="guided" class="active" type="button">● Guided practice</button><button id="free" type="button">Free practice</button></div><div class="turn-panel" id="turn-panel"><div class="quiz-step">STEP 1 / PREDICT THE TURN</div><h2 id="turn-title">Where would you start turning?</h2><p id="turn-description">Tap or click the main road directly behind the car, at the point you'd begin turning the wheel left while reversing.</p><div class="turn-score" id="turn-score" aria-live="polite"></div><div class="turn-buttons"><button id="change-turn" type="button" hidden>↺ Change point</button><button id="start-turn" type="button" disabled>Ready to reverse →</button></div><div id="actual-turn" class="actual-turn" hidden></div></div><div class="coach" id="coach"><div class="state" id="coach-state">STEP 01 / PREPARE</div><h2 id="coach-title">Reverse straight first</h2><p id="coach-text">Keep the wheel centred. Reverse slowly towards the orange turning marker, watching around the car.</p></div><div class="metric"><span>Distance to turn-in</span><strong id="distance">8.5 <small>m</small></strong></div><div class="progress"><i id="progressbar"></i></div><div class="metric"><span>Car angle into corner</span><strong id="angle">0° / 90°</strong></div><div class="metric"><span>Rear-axle steering</span><strong id="direction">STRAIGHT</strong></div></section>
  <section class="panel mirror-panel" id="mirror-panel"><div class="small-head"><span>308 · adjustable left mirror</span><span>● LIVE REFLECTION</span></div>
 <div class="mirror-choice"><button id="reverse-target" class="active" type="button">↙ Kerb / reversing</button><button id="road-target" type="button">↑ Normal driving</button></div>
@@ -139,6 +191,27 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <div class="mirror-note">Simplified mirror simulation, not an exact 308 reflection. Green guides show a <em>starting point</em>, not a universal setting. During a real manoeuvre, check all around the car, not just the mirror, and restore your normal road view afterwards.</div></section>
 <section class="panel" id="vehicle-panel"><div class="small-head"><span>Vehicle controls</span><span>WHEEL / PEDALS</span></div><div class="steering-readout"><svg id="steering-wheel-icon" class="steering-wheel-icon" viewBox="0 0 80 80" role="img" aria-label="Steering wheel direction"><circle cx="40" cy="40" r="31" fill="#111b27" stroke="#b6c6d8" stroke-width="6"/><path d="M11 33 Q40 44 69 33 M40 40 L40 67 M40 38 L28 51 M40 38 L52 51" fill="none" stroke="#8ba6c2" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="40" r="12" fill="#294157" stroke="#d3e3ed" stroke-width="2"/><path d="M35 39 L45 39 M40 33 L40 46" stroke="#f3f8fa" stroke-width="2"/></svg><div class="steering-values"><span>RHD steering wheel <small>DRIVER'S RIGHT</small></span><strong id="steervalue">0°</strong></div></div><input id="wheel" class="slider" type="range" min="-35" max="35" value="0" step="1" aria-label="Front wheel steering angle (left to right)"><div class="slider-labels"><span>← LEFT</span><span>CENTRE</span><span>RIGHT →</span></div><div class="small-control"><button id="left" type="button">↶ Left 5°</button><button id="center" type="button">◎ Centre</button><button id="right" type="button">Right 5° ↷</button></div><div class="pedals"><button class="pedal" id="reverse" type="button">↓ REVERSE <small>HOLD TO MOVE</small></button><button class="pedal secondary" id="forward" type="button">↑ FORWARD <small>HOLD TO MOVE</small></button></div><div class="actions"><button class="primary" id="demo" type="button">▶ Watch ideal run</button><button id="reset" type="button">↺ Reset same corner</button></div><div class="footnote">Your blue 5-door 308 is rendered from above, so its shape is an illustration of the car in your photo. Simulation uses 2010 308 hatch dimensions and bicycle-model steering. It teaches the timing and geometry, not real car feel or the safety observations needed on the road.</div></section></aside></div>
 </div>
+
+<div class="overlay-sheet" id="finish-dialog" role="dialog" aria-modal="true" aria-labelledby="finish-title" hidden>
+ <div class="overlay-card"><div class="overlay-eyebrow" id="finish-label">✓ EXERCISE 2 COMPLETE</div><h2 id="finish-title">Corner complete!</h2>
+ <p id="finish-copy">You made it around the bend and finished parallel to the side road. Want another go?</p>
+ <div class="overlay-summary"><strong id="finish-road">90° bend · 5.0 m curve</strong><span id="finish-turn-note">Your turn-point prediction stays with this corner.</span></div>
+ <div class="overlay-actions"><button type="button" id="finish-again">↺ Try again</button><button class="primary" type="button" id="finish-new">✦ New corner →</button></div>
+ </div>
+</div>
+<div class="overlay-sheet" id="mirror-dialog" role="dialog" aria-modal="true" aria-labelledby="mirror-dialog-title" hidden>
+ <div class="overlay-card mirror-card"><div class="overlay-top"><div><div class="overlay-eyebrow">PEUGEOT 308 · LEFT DOOR MIRROR</div><h2 id="mirror-dialog-title">Adjust your mirror</h2></div><button class="overlay-close" type="button" id="mirror-close" aria-label="Close mirror adjustment">×</button></div>
+ <p>Keep a narrow strip of the blue 308 in view, with the kerb and road clearly visible behind you.</p>
+ <div class="mirror-large"><canvas id="mirror-modal-preview" width="576" height="304" role="img" aria-label="Large simulated left door mirror showing the blue Peugeot 308 alongside the rearward road and kerb"></canvas></div>
+ <div class="mirror-adjust-hint">The blue body, glass, rear door and tail light are part of the live reflection. The dashed green guides show a suggested starting position.</div>
+ <div class="mirror-form"><label for="mirror-modal-horizontal">↔ Left / right <output id="mirror-modal-h-val">0°</output></label><input id="mirror-modal-horizontal" type="range" min="-4" max="4" value="1" step=".1" aria-label="Adjust left mirror horizontally"><label for="mirror-modal-vertical">↕ Up / down <output id="mirror-modal-v-val">0°</output></label><input id="mirror-modal-vertical" type="range" min="-2" max="5" value="0" step=".1" aria-label="Adjust left mirror vertically"></div>
+ <div class="mirror-form-status" id="mirror-modal-status" role="status"></div>
+ <div class="mirror-controls"><button type="button" id="mirror-modal-suggested">✦ Suggested kerb view</button><button type="button" id="mirror-modal-normal">↺ Normal driving view</button></div>
+ <div class="overlay-actions"><button class="primary" type="button" id="mirror-done">✓ Done adjusting</button></div>
+ <div class="mirror-adjust-hint">Training illustration, not an optically exact mirror. For the real driving test, use your instructor’s guidance and check all around the car.</div>
+ </div>
+</div>
+
 <script>
 (()=>{
 'use strict';
@@ -151,7 +224,7 @@ const ROAD={mainL:4.4,mainR:11.6,halfW:3.3,origin:{x:0,y:2},cornerR:3.2,theta:Ma
 // Turning arc is explicitly specified by the *kerb curve length* and its angle.
 // For a circular bend: arc length = radius × radians. Independently varying
 // both angle and arc length produces a realistic range of open and tight bends.
-const MIRROR_TARGETS={reverse:{yaw:0.1,tilt:3.5},road:{yaw:0.9,tilt:0}};
+const MIRROR_TARGETS={reverse:{yaw:-0.9,tilt:3.5},road:{yaw:0.9,tilt:0}};
 let mirrorAim={yaw:1,tilt:0},mirrorGoal='reverse';
 let START,TURN,guide,car,guided=true,demo=false,moving=0,collision=false,success=false,history=[],time=0,pressLeft=false,pressRight=false,last=0;
 let phase='pick',chosenY=null,actualTurnY=null;
@@ -186,7 +259,20 @@ function configureRoad(angle=90,arcLength=5.03,halfWidth=3.3,approach=8.5){
  text('road-angle',angle+'°');text('road-length',arcLength.toFixed(1)+' m');
  text('course-detail','Kerb radius '+a.cornerR.toFixed(1)+' m · road '+(2*halfWidth).toFixed(1)+' m wide');
 }
-function reset(){car={...START};demo=false;moving=0;collision=false;success=false;phase='pick';chosenY=null;actualTurnY=null;history=[{x:car.x,y:car.y}];$('demo').textContent='▶ Watch ideal run';$('reverse').classList.remove('pressed');$('forward').classList.remove('pressed');updateControls();updateTurnQuiz();updateCoach();drawMirror();}
+let lastDialogTrigger=null,finishedByDemo=false;
+function openDialog(id,trigger){const el=$(id);lastDialogTrigger=trigger||document.activeElement;el.hidden=false;document.body.classList.add('has-modal');
+ const first=el.querySelector('button');if(first)first.focus({preventScroll:true});}
+function closeDialog(id){$(id).hidden=true;if($('finish-dialog').hidden&&$('mirror-dialog').hidden){document.body.classList.remove('has-modal');if(lastDialogTrigger?.isConnected)lastDialogTrigger.focus({preventScroll:true});}}
+function closeAllDialogs(){for(const id of ['finish-dialog','mirror-dialog'])$(id).hidden=true;document.body.classList.remove('has-modal');}
+function showFinish(){finishedByDemo=demo;pressLeft=pressRight=false;stageRelease();releasePedals();
+ text('finish-title',finishedByDemo?'Ideal run complete':'Corner complete!');
+ text('finish-label',finishedByDemo?'✓ DEMONSTRATION COMPLETE':'✓ EXERCISE 2 COMPLETE');
+ text('finish-copy',finishedByDemo?'You watched the 308 reverse all the way around the bend. Try steering yourself on this road, or practise a new corner.':'The 308 finished parallel to the side road without touching the kerb. Have another go or try a different bend.');
+ text('finish-road',Math.round(deg(ROAD.theta))+'° bend · '+ROAD.arcLength.toFixed(1)+' m kerb curve');
+ text('finish-turn-note',chosenY===null?'You can practise this corner again.':'Your original prediction was '+describeTurn(chosenY-TURN.y)+'.');
+ openDialog('finish-dialog',$('reverse-stage'));}
+function tryCornerAgain(){closeAllDialogs();releasePedals();stageRelease();car={...START};demo=false;moving=0;pressLeft=pressRight=false;collision=false;success=false;actualTurnY=null;history=[{x:car.x,y:car.y}];phase='drive';$('demo').textContent='▶ Watch ideal run';updateControls();updateTurnQuiz();updateCoach();}
+function reset(){closeAllDialogs();releasePedals();stageRelease();car={...START};demo=false;moving=0;collision=false;success=false;phase='pick';chosenY=null;actualTurnY=null;history=[{x:car.x,y:car.y}];$('demo').textContent='▶ Watch ideal run';$('reverse').classList.remove('pressed');$('forward').classList.remove('pressed');updateControls();updateTurnQuiz();updateCoach();drawMirror();}
 function turnGrade(delta){let abs=Math.abs(delta);return abs<=.35?'Excellent':abs<=scoreTolerance?'Very close':abs<=1.35?'Close — adjust next try':'Needs adjustment';}
 function describeTurn(delta){return Math.abs(delta)<=.14?'right on the reference point':Math.abs(delta).toFixed(2)+' m '+(delta<0?'early':'late');}
 function updateTurnQuiz(){
@@ -237,7 +323,12 @@ function generateNewCorner(){
  const width=3.05+Math.random()*.65, approach=7.6+Math.random()*2.8;
  configureRoad(next,Math.round(len*10)/10,width,approach);reset();
 }
-function updateControls(){const d=Math.round(deg(car.steer));$('steering-wheel-icon').style.transform='rotate('+(d*2.5)+'deg)';$('wheel').value=d;text('steervalue',(d===0?'0':(d<0?'← '+Math.abs(d):'→ '+d))+'°');text('direction',d===0?'STRAIGHT':d<0?'LEFT '+Math.abs(d)+'°':'RIGHT '+d+'°');}
+function updateControls(){const d=Math.round(deg(car.steer));
+ for(const id of ['steering-wheel-icon','hud-steering-wheel'])$(id).style.transform='rotate('+(d*2.5)+'deg)';
+ $('wheel').value=d;text('steervalue',(d===0?'0':(d<0?'← '+Math.abs(d):'→ '+d))+'°');
+ text('hud-wheel-deg',Math.abs(d)+'°');text('hud-wheel-dir',d===0?'STRAIGHT':d<0?'↶ LEFT':'RIGHT ↷');
+ text('direction',d===0?'STRAIGHT':d<0?'LEFT '+Math.abs(d)+'°':'RIGHT '+d+'°');}
+
 function isRoad(x,y){const a=ROAD;
  if(x>=a.mainL&&x<=a.mainR)return true;
  const p={x:x-a.origin.x,y:y-a.origin.y},s=dot(p,a.d),q=dot(p,a.n);
@@ -263,7 +354,7 @@ function moveState(c,velocity,dt){let theta=c.angle;
 }
 // Fix sign conventions: front faces heading angle; reverse velocity is negative;
 // steering LEFT is negative and hence reverse makes car rotate clockwise toward East.
-function update(dt){time+=dt;
+function update(dt){if(!$('finish-dialog').hidden||!$('mirror-dialog').hidden)return;time+=dt;
  if(pressLeft||pressRight){const s=(pressRight?1:0)-(pressLeft?1:0);car.steer=clamp(car.steer+s*dt*.7,-MAXSTEER,MAXSTEER);updateControls();}
  if(demo){moving=-1;
    // Ideal turn-in starts at the tangent point of the guide curve.
@@ -280,7 +371,7 @@ function update(dt){time+=dt;
    else{if(time%0.1<dt)history.push({x:car.x,y:car.y});if(history.length>550)history.shift();if(collision)collision=false;}
    const p={x:car.x-ROAD.idealEnd.x,y:car.y-ROAD.idealEnd.y};
    const dist=dot(p,ROAD.d),cross=dot(p,ROAD.n);
-   if(dist>10 &&Math.abs(car.angle-ROAD.targetAngle)<.20&&Math.abs(cross)<1.05&&!collision){success=true;moving=0;demo=false;$('demo').textContent='▶ Watch ideal run';}
+   if(dist>10 &&Math.abs(car.angle-ROAD.targetAngle)<.20&&Math.abs(cross)<1.05&&!collision){success=true;moving=0;showFinish();demo=false;$('demo').textContent='▶ Watch ideal run';}
  }
  updateCoach();
 }
@@ -405,7 +496,7 @@ function drawCar(c,opacity=1,features=true){ctx.save();ctx.globalAlpha=opacity;c
  ctx.restore();}
 // Adjustable left-hand mirror. This is a rear-facing ground-plane projection,
 // with a horizontal yaw shift and vertical tilt, *not* an optical ray-tracer.
-const mirror=$('mirror'),mctx=mirror.getContext('2d',{alpha:false}),mirrorMini=$('mirrormini'),miniCtx=mirrorMini.getContext('2d');let lastMirror=-1000;
+const mirror=$('mirror'),mctx=mirror.getContext('2d',{alpha:false}),mirrorMini=$('mirrormini'),miniCtx=mirrorMini.getContext('2d'),modalMirror=$('mirror-modal-preview'),modalMirrorCtx=modalMirror.getContext('2d');let lastMirror=-1000;
 function distSegment(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/Math.max(1e-10,dx*dx+dy*dy),0,1);return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));}
 function leftClearance(){
  const n={x:Math.sin(car.angle),y:-Math.cos(car.angle)};
@@ -417,6 +508,8 @@ function bodyEdgeX(y,yaw,W,H){return W*(.925+yaw*.045)-W*.105*Math.max(0,y/H-.15
 function mirrorHorizon(tilt,H){return H*(.43-.045*tilt);}
 function updateMirrorControls(){
  $('mirror-horizontal').value=mirrorAim.yaw;$('mirror-vertical').value=mirrorAim.tilt;
+ $('mirror-modal-horizontal').value=mirrorAim.yaw;$('mirror-modal-vertical').value=mirrorAim.tilt;
+ text('mirror-modal-h-val',(mirrorAim.yaw>0?'+':'')+mirrorAim.yaw.toFixed(1)+'°');text('mirror-modal-v-val',(mirrorAim.tilt>0?'+':'')+mirrorAim.tilt.toFixed(1)+'°');
  text('mirror-h-val',(mirrorAim.yaw>0?'+':'')+mirrorAim.yaw.toFixed(1)+'°');
  text('mirror-v-val',(mirrorAim.tilt>0?'+':'')+mirrorAim.tilt.toFixed(1)+'°');
  const target=MIRROR_TARGETS[mirrorGoal],dy=mirrorAim.yaw-target.yaw,dv=mirrorAim.tilt-target.tilt,aligned=Math.abs(dy)<.45&&Math.abs(dv)<.55;
@@ -426,7 +519,7 @@ function updateMirrorControls(){
  else{const steps=[];if(Math.abs(dy)>=.45)steps.push(dy>0?'aim a little more inward':'aim a little more outward');
  if(Math.abs(dv)>=.55)steps.push(dv<0?'tilt the mirror down':'tilt the mirror up');
  message='Adjust the mirror: '+steps.join(' and ')+'. Match the dashed green guides.';}
- text('mirror-status',message);
+ text('mirror-status',message);text('mirror-modal-status',message);$('mirror-modal-status').classList.toggle('aligned',aligned);
  $('reverse-target').classList.toggle('active',mirrorGoal==='reverse');$('road-target').classList.toggle('active',mirrorGoal==='road');
  drawMirror();
 }
@@ -452,17 +545,32 @@ function drawMirror(){
  mctx.save();mctx.beginPath();mctx.rect(0,horizon,W,H-horizon);mctx.clip();
  for(const line of kerbLines()){mctx.beginPath();let started=false;for(const p of line){const q=proj(p);if(!q){started=false;continue;}if(!started)mctx.moveTo(q.x,q.y);else mctx.lineTo(q.x,q.y);started=true;}mctx.strokeStyle='#f4e5c7';mctx.lineWidth=2.5;mctx.lineJoin='round';mctx.stroke();}
  mctx.restore();
- // Edge of the blue 308 moves as the mirror is aimed inward/outward.
- const body=mctx.createLinearGradient(W*.75,0,W,0);body.addColorStop(0,'#102f69');body.addColorStop(.6,'#2b69b5');body.addColorStop(1,'#79a5e0');
- mctx.beginPath();mctx.moveTo(bodyEdgeX(H*.15,mirrorAim.yaw,W,H),H*.15);
- mctx.bezierCurveTo(bodyEdgeX(H*.4,mirrorAim.yaw,W,H),H*.4,bodyEdgeX(H*.7,mirrorAim.yaw,W,H),H*.7,bodyEdgeX(H,mirrorAim.yaw,W,H),H);
- mctx.lineTo(W,H);mctx.lineTo(W,H*.13);mctx.closePath();mctx.fillStyle=body;mctx.fill();
- mctx.beginPath();mctx.moveTo(bodyEdgeX(H*.15,mirrorAim.yaw,W,H),H*.15);
- mctx.bezierCurveTo(bodyEdgeX(H*.4,mirrorAim.yaw,W,H),H*.4,bodyEdgeX(H*.7,mirrorAim.yaw,W,H),H*.7,bodyEdgeX(H,mirrorAim.yaw,W,H),H);
- mctx.strokeStyle='#f3f7e7a8';mctx.lineWidth=2;mctx.stroke();
- // Rear light can appear in the lower part as the left rear quarter becomes visible.
- const tailX=bodyEdgeX(H*.82,mirrorAim.yaw,W,H)+W*.07;
- if(tailX<W+9){mctx.fillStyle='#f46370';mctx.beginPath();mctx.ellipse(tailX,H*.83,7.5,14,.25,0,Math.PI*2);mctx.fill();}
+ // Blue Peugeot 308 left flank seen in the mirror, using the same animated
+ // yaw/tilt as the road projection. Keep a narrow strip of the vehicle on the
+ // inside (right) edge; looking inwards reveals more of its windows and panels.
+ const edgeY=y=>bodyEdgeX(y,mirrorAim.yaw,W,H)+mirrorAim.tilt*1.1;
+ mctx.save();mctx.beginPath();mctx.moveTo(edgeY(H*.09),H*.09);
+ mctx.bezierCurveTo(edgeY(H*.38)-2,H*.40,edgeY(H*.73)+3,H*.72,edgeY(H),H);
+ mctx.lineTo(W+3,H);mctx.lineTo(W+3,H*.09);mctx.closePath();mctx.clip();
+ const blue=mctx.createLinearGradient(W*.61,0,W,0);
+ blue.addColorStop(0,'#0c285c');blue.addColorStop(.4,'#2153a2');blue.addColorStop(.78,'#3775c6');blue.addColorStop(1,'#93bcf1');
+ mctx.fillStyle=blue;mctx.fillRect(0,0,W,H);
+ // Characteristic long rear side glass with a black B-pillar, chrome window trim
+ // and door shutline; glass and door follow mirror movement.
+ mctx.fillStyle='#132a3a';mctx.beginPath();mctx.moveTo(edgeY(H*.16)+3,H*.18);mctx.lineTo(W+8,H*.14);mctx.lineTo(W+8,H*.49);mctx.lineTo(edgeY(H*.48)+6,H*.49);mctx.closePath();mctx.fill();
+ mctx.fillStyle='#527f99';mctx.beginPath();mctx.moveTo(edgeY(H*.20)+6,H*.22);mctx.lineTo(W+5,H*.20);mctx.lineTo(W+5,H*.29);mctx.lineTo(edgeY(H*.41)+7,H*.39);mctx.closePath();mctx.fill();
+ mctx.strokeStyle='#c4d6ee9c';mctx.lineWidth=1.2;mctx.beginPath();mctx.moveTo(edgeY(H*.48)+4,H*.49);mctx.lineTo(W+5,H*.49);mctx.stroke();
+ mctx.strokeStyle='#183e7b';mctx.lineWidth=2;mctx.beginPath();mctx.moveTo(edgeY(H*.52)+7,H*.5);mctx.bezierCurveTo(edgeY(H*.69)+7,H*.68,edgeY(H*.85)+10,H*.88,W+10,H*.93);mctx.stroke();
+ mctx.strokeStyle='#102b55';mctx.lineWidth=1.2;mctx.beginPath();mctx.moveTo(edgeY(H*.66)+5,H*.66);mctx.lineTo(W+6,H*.66);mctx.stroke();
+ // Rear-door handle, rubber trim and a hint of the rear quarter/tail light.
+ mctx.fillStyle='#dce9f1';mctx.beginPath();mctx.roundRect(edgeY(H*.59)+11,H*.595,Math.max(7,Math.min(23,W-edgeY(H*.59)-14)),3,2);mctx.fill();
+ mctx.fillStyle='#12284e';mctx.beginPath();mctx.roundRect(edgeY(H*.73)+2,H*.74,Math.max(17,W-edgeY(H*.73)+6),5,3);mctx.fill();
+ mctx.fillStyle='#d44658';mctx.shadowColor='#e45e64';mctx.shadowBlur=5;mctx.beginPath();mctx.ellipse(edgeY(H*.40)+8,H*.40,7,13,-.2,0,Math.PI*2);mctx.fill();mctx.shadowBlur=0;
+ mctx.fillStyle='#d4e9fa6b';mctx.font='bold 10px system-ui';mctx.fillText('308',Math.min(W-24,edgeY(H*.87)+12),H*.88);
+ mctx.restore();
+ // Crisp bonnet-side contour / vehicle boundary in the reflected image.
+ mctx.strokeStyle='#d4e7f9c3';mctx.lineWidth=1.4;mctx.beginPath();mctx.moveTo(edgeY(H*.09),H*.09);
+ mctx.bezierCurveTo(edgeY(H*.38)-2,H*.40,edgeY(H*.73)+3,H*.72,edgeY(H),H);mctx.stroke();
  const gloss=mctx.createLinearGradient(0,0,W,H);gloss.addColorStop(0,'#ffffff13');gloss.addColorStop(.5,'#ffffff00');gloss.addColorStop(1,'#020a1935');mctx.fillStyle=gloss;mctx.fillRect(0,0,W,H);
  // Green calibration guide: horizon/kerb framing and narrow car-side sliver.
  const target=MIRROR_TARGETS[mirrorGoal],targetH=mirrorHorizon(target.tilt,H);
@@ -473,6 +581,7 @@ function drawMirror(){
  mctx.font='700 11px system-ui';mctx.fillStyle='#ebf8fbdf';mctx.fillText('LEFT MIRROR • LIVE',13,17);
  const clearance=leftClearance();text('clearance',clearance.toFixed(2)+' m'+(clearance<.3?' · CLOSE':''));$('clearance').style.color=clearance<.3?'#ffbc70':'#b8f779';
  miniCtx.drawImage(mirror,0,0,mirrorMini.width,mirrorMini.height);
+ modalMirrorCtx.drawImage(mirror,0,0,modalMirror.width,modalMirror.height);
 }
 function draw(){if(!dw||!dh)resize();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#1c3531';ctx.fillRect(0,0,dw,dh);ctx.translate(tx,ty);ctx.scale(scale,scale);
  drawBackground();
@@ -510,6 +619,18 @@ $('reverse-target').addEventListener('click',()=>setMirrorGoal('reverse'));
 $('road-target').addEventListener('click',()=>setMirrorGoal('road'));
 $('mirror-align').addEventListener('click',()=>setMirrorAim(mirrorGoal));
 $('mirror-drive').addEventListener('click',()=>{mirrorGoal='road';setMirrorAim('road');});
+$('finish-again').addEventListener('click',tryCornerAgain);
+$('finish-new').addEventListener('click',()=>{closeAllDialogs();generateNewCorner();});
+$('mirror-open').addEventListener('click',()=>{if(phase!=='drive')return;releasePedals();stageRelease();pressLeft=pressRight=false;drawMirror();openDialog('mirror-dialog',$('mirror-open'));});
+$('mirror-close').addEventListener('click',()=>closeDialog('mirror-dialog'));
+$('mirror-done').addEventListener('click',()=>closeDialog('mirror-dialog'));
+$('mirror-modal-horizontal').addEventListener('input',e=>{mirrorAim.yaw=Number(e.target.value);updateMirrorControls();});
+$('mirror-modal-vertical').addEventListener('input',e=>{mirrorAim.tilt=Number(e.target.value);updateMirrorControls();});
+$('mirror-modal-suggested').addEventListener('click',()=>{mirrorGoal='reverse';setMirrorAim('reverse');});
+$('mirror-modal-normal').addEventListener('click',()=>{mirrorGoal='road';setMirrorAim('road');});
+$('mirror-dialog').addEventListener('pointerdown',e=>{if(e.target===$('mirror-dialog'))closeDialog('mirror-dialog');});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('mirror-dialog').hidden)closeDialog('mirror-dialog');}});
+
 $('demo').addEventListener('click',()=>{if(phase!=='drive')return;if(demo){demo=false;moving=0;$('demo').textContent='▶ Watch ideal run';return;}car={...START};moving=0;collision=false;success=false;actualTurnY=null;history=[{x:car.x,y:car.y}];demo=true;updateControls();updateTurnQuiz();$('demo').textContent='Ⅱ Pause demo';});
 function setGuided(v){guided=v;$('guided').classList.toggle('active',v);$('free').classList.toggle('active',!v);updateCoach();}
 $('guided').addEventListener('click',()=>setGuided(true));$('free').addEventListener('click',()=>setGuided(false));
@@ -536,7 +657,7 @@ window.addEventListener('keyup',e=>{keys.delete(e.key);pressLeft=phase==='drive'
 window.addEventListener('blur',()=>{pressLeft=pressRight=false;keys.clear();releasePedals();stageRelease();});
 window.addEventListener('resize',resize);window.addEventListener('orientationchange',resize);const obs=new ResizeObserver(resize);obs.observe(canvas);
 configureRoad(90,Math.PI/2*3.2);reset();updateMirrorControls();resize();requestAnimationFrame(frame);
-window.__cornerCoach=()=>({phase,chosenY,idealY:TURN.y,actualTurnY,success,collision,demo,angle:Math.round(deg(ROAD.theta)),arcLength:ROAD.arcLength,radius:ROAD.cornerR,mirrorAim,mirrorGoal,car:{...car}});
+window.__cornerCoach=()=>({phase,chosenY,idealY:TURN.y,actualTurnY,success,collision,demo,angle:Math.round(deg(ROAD.theta)),arcLength:ROAD.arcLength,radius:ROAD.cornerR,mirrorAim,mirrorGoal,finishOpen:!$('finish-dialog').hidden,mirrorOpen:!$('mirror-dialog').hidden,car:{...car}});
 
 })();
 </script>
